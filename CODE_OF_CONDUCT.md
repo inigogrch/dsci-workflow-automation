@@ -21,3 +21,22 @@ The following behaviors are considered unacceptable:
  • Disruptive, threatening, or violent behavior.
  • Publishing private information without consent (doxxing).
  • Deliberate intimidation, stalking, or sustained disruption of discussions or events.
+
+ 4.Consequences for Violations
+
+Violations of this Code of Conduct may result in:
+ • A formal warning regarding inappropriate behavior.
+ • Temporary suspension from participation in the project.
+ • Permanent removal from the project, including access to repositories and community spaces.
+
+5.Reporting Process
+
+If you experience or witness behavior that violates this Code of Conduct, please report it by:
+ • Emailing the DSCI 310 Teaching Team
+ • Contacting a project author directly
+
+All reports will be handled confidentially and reviewed promptly. Appropriate actions will be taken to ensure the safety and well-being of the community.
+
+6.Scope
+
+This Code of Conduct applies to all project spaces, including GitHub discussions, forums, chat platforms, social media, and in-person or virtual meetings. By participating in this project, you agree to adhere to these guidelines to maintain a respectful and inclusive environment for all.
