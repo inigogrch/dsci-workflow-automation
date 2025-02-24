@@ -3,10 +3,7 @@
 Project title: TBA
 
 List of contributors/authors:
-Michael Tham
-Yui Mikuriya
-Benjamin Gerochi
-Izzy Zhou
+Michael Tham, Yui Mikuriya, Benjamin Gerochi, Izzy Zhou
 
 Short Summary of Project: TBA
 
