@@ -21,6 +21,7 @@ RUN Rscript -e "remotes::install_version('dplyr', version = '1.1.3', repos = 'ht
 RUN Rscript -e "remotes::install_version('GGally', version = '2.1.2', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('patchwork', version = '1.2.0', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('knitr', version = '1.42', repos = 'https://cloud.r-project.org')"
+RUN Rscript -e "remotes::install_github('DSCI-310/dsci-310-group-08')"
 
 EXPOSE 8787
 
