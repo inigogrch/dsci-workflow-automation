@@ -1,4 +1,4 @@
-Contributing to [Project Name]
+Contributing to U.S. Adult Census: Income Prediction with Logistic Regression
 
 Thank you for your interest in contributing! We welcome all contributions, whether it’s reporting issues, suggesting features, or submitting code improvements.
 
