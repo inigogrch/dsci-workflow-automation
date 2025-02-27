@@ -36,3 +36,7 @@ Contributing Code
 For help, open an issue on GitHub.
 
 We appreciate your contributions—thank you for helping improve our project, U.S. Adult Census Income Prediction with Logistic Regression!
+
+We will review pull requests within 7 days.
+
+All contributors must abide by our CODE_OF_CONDUCT.md.
