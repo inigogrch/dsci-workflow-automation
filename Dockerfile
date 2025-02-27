@@ -29,6 +29,7 @@ RUN Rscript -e "remotes::install_version('ggplot2', version = '3.4.3', repos = '
 RUN Rscript -e "remotes::install_version('dplyr', version = '1.1.3', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('patchwork', version = '1.2.0', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('knitr', version = '1.42', repos = 'https://cloud.r-project.org')"
+RUN Rscript -e "remotes::install_version('pROC', version = '1.18.5', repos = 'https://cloud.r-project.org')"
 
 # Expose port 8787 for RStudio
 EXPOSE 8787
