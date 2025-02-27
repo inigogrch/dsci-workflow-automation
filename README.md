@@ -3,14 +3,15 @@
 # Project title: U.S. Adult Census Income Prediction with Logistic Regression
 
 List of contributors/authors:
-Michael Tham, Yui Mikuriya, Benjamin Gerochi, Izzy Zhou
+    - Michael Tham
+    - Yui Mikuriya
+    - Benjamin Gerochi
+    - Izzy Zhou
 
 # Project Summary:
 This project aims to investigate income prediction using the UCI Adult Dataset, which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, in our analysis we aim to effectively predic income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy.
 
 Some tools we will use are the R programming language for data loading, wrangling, cleaning, and analysis as well as Docker to containerize our environments. Furthermore, we will use a plethora of R packages such as tidyverse, broom, and repr.
-
-This project is part of [course name/number] and focuses on [specific focus of the project].
 
 # How to Run the Analysis  
 To reproduce the analysis, follow these steps:  
@@ -38,21 +39,21 @@ The following dependencies are required to run the analysis:
     - R (version 4.3.1 or higher)
 
 ## R Packages:
-tidyverse
-ggplot2
-dplyr
-knitr
-broom
-repr
-infer
-gridExtra
-farway
-mitools
-glmnet
-cowplot
-modelr
-patchwork
-knitr
+    - tidyverse
+    - ggplot2
+    - dplyr
+    - knitr
+    - broom
+    - repr
+    - infer
+    - gridExtra
+    - farway
+    - mitools
+    - glmnet
+    - cowplot
+    - modelr
+    - patchwork
+    - knitr
 
 # Licenses
 This project is licensed under the terms of the MIT License. See the LICENSE.md file for details.
