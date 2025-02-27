@@ -35,4 +35,4 @@ Contributing Code
 
 For help, open an issue on GitHub.
 
-We appreciate your contributions—thank you for helping improve [Project Name]!
+We appreciate your contributions—thank you for helping improve our project, U.S. Adult Census Income Prediction with Logistic Regression!

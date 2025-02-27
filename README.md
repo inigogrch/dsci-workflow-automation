@@ -1,6 +1,6 @@
 # dsci-310-group-8
 
-# Project title: U.S. Adult Census: Income Prediction with Logistic Regression
+# Project title: U.S. Adult Census Income Prediction with Logistic Regression
 
 List of contributors/authors:
 Michael Tham, Yui Mikuriya, Benjamin Gerochi, Izzy Zhou
