@@ -9,7 +9,7 @@
     - Izzy Zhou
 
 # Project Summary:
-This project aims to investigate income prediction using the UCI Adult Dataset, which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, in our analysis we aim to effectively predic income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy.
+This project aims to investigate income prediction using the UCI Adult Dataset, which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, in our analysis we aim to effectively predict income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy.
 
 Some tools we will use are the R programming language for data loading, wrangling, cleaning, and analysis as well as Docker to containerize our environments. Furthermore, we will use a plethora of R packages such as tidyverse, broom, and repr.
 
