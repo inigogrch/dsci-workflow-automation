@@ -42,8 +42,17 @@ tidyverse
 ggplot2
 dplyr
 knitr
-
-[Add other packages as needed]
+broom
+repr
+infer
+gridExtra
+farway
+mitools
+glmnet
+cowplot
+modelr
+patchwork
+knitr
 
 # Licenses
 This project is licensed under the terms of the MIT License. See the LICENSE.md file for details.
