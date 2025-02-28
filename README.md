@@ -54,6 +54,7 @@ The following dependencies are required to run the analysis:
     - modelr
     - patchwork
     - knitr
+    - pROC
 
 # Licenses
 This project is licensed under the terms of the MIT License. See the LICENSE.md file for details.
