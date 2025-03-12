@@ -21,13 +21,13 @@ Summary of Findings and Implications:
 - Higher education and increased work hours are strongly linked to higher income, reinforcing the importance of skill development and labor market participation.
 - These findings suggest that policy efforts aimed at reducing income inequality should focus on education accessibility and work-life balance initiatives.
 
-Expectations and Results
+Expectations and Results:
 - The results align with expectations:
 - Age & Experience: Older individuals generally earn more due to accumulated experience.
 - Education: Those with higher degrees earn significantly more.
 - Work Hours: More hours worked often lead to higher pay.
 
-Future Research
+Future Research:
 - Geographic Factors: Examining regional disparities in income may provide insights into location-based economic opportunities.
 - Demographic Intersections: Investigating how race, gender, and marital status interact with income could enhance model accuracy.
 - Health & Disability: Including health variables could highlight additional barriers affecting earnings potential.
