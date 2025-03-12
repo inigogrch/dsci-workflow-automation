@@ -76,7 +76,7 @@ The following dependencies are required to run the analysis:
     - pROC
 
 # Licenses
-This project is licensed under the terms of the Creative Commons Corporation License. See the LICENSE.md file for details.
+This project is licensed under the terms of the Creative Commons Legal Code. See the LICENSE.md file for details.
 
 # Contributing
 Contributions to this project are welcome. Please follow the CONTRIBUTING.md if you'd like to contribute.
