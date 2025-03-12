@@ -50,6 +50,37 @@ To reproduce the analysis, follow these steps:
     - Open the RStudio environment
     - Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
 
+1. **Clone the repository**:  
+   ```bash
+   git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
+   cd dsci-310-group-8
+   ```
+
+2. **Set Up the Environment**:
+    - **Install Docker**: Follow the instructions for your operating system from the [Docker website](https://docs.docker.com/get-docker/).
+    - **Build Docker Image**: 
+      ```bash
+      docker build -t dsci-310-group-8-project-docker:v1.0 .
+      ```
+    - **Run the Docker Container**: 
+      ```bash
+      docker run -it -p 8787:8787 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker:v1.0
+      ```
+    - **Access the RStudio server**: Open your web browser and go to [http://localhost:8787](http://localhost:8787). Use the following credentials to log in:
+      - **Username**: `rstudio`
+      - **Password**: `rstudio`
+
+3. **Run the Analysis**:
+    - **Open the RStudio environment**.
+    - **Navigate to the `src` directory**:
+      ```bash
+      cd /home/rstudio/project/src
+      ```
+    - **Run the analysis scripts** (e.g., `analysis.R`):
+      ```r
+      source('analysis.R')
+      ```
+
 # Dependencies
 The following dependencies are required to run the analysis:
 
