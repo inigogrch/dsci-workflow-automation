@@ -32,54 +32,93 @@ Future Research:
 - Demographic Intersections: Investigating how race, gender, and marital status interact with income could enhance model accuracy.
 - Health & Disability: Including health variables could highlight additional barriers affecting earnings potential.
 
-# How to Run the Analysis  
-To reproduce the analysis, follow these steps:  
+# Docker Container Setup  
+This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis. 
 
-1. **Clone the repository**:  
+## Using Docker with Docker Compose (Recommended)
+
+The easiest way to use our Docker container is with Docker Compose:
+
+1. **Install Docker and Docker Compose** on your system if you haven't already:
+   - [Docker Installation Guide](https://docs.docker.com/get-docker/)
+   - [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
+
+2. **Run the container** by navigating to the project directory and executing:
+
    ```bash
-   git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
-   cd dsci-310-group-8
-
-2. **Set Up the Environment**:
-    - Install Docker
-    - Build Docker Image: docker build -t dsci-310-group-8-project-docker .
-    - Run the Docker Container: docker run -it -p 8787:8787 dsci-310-group-8-project-docker
-    - Access the RStudio server at http://localhost:8787.
-
-3. **Run the Analysis**:
-    - Open the RStudio environment
-    - Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
-
-1. **Clone the repository**:  
-   ```bash
-   git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
-   cd dsci-310-group-8
+   docker-compose up
    ```
 
+3. **Access RStudio** by opening a web browser and going to: 
+   - http://localhost:8787
+
+Use the following credentials:
+- Username: rstudio
+- Password: group8
+
+## Using Docker directly
+
+If you prefer to use Docker without Docker Compose:
+
+1. **Pull the image from Docker Hub**:
+
+   ```bash
+   docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
+   ```
+
+2. **Run the container**:
+
+    ```bash
+    docker run -d -p 8787:8787 -e PASSWORD=rstudio -v $(pwd):/home/rstudio/project zx2yizzy/dsci-310-group-8-project-docker:latest
+    ```
+
+3. **Access RStudio** by opening a web browser and going to:
+
+    ```bash
+    http://localhost:8787
+    ```
+
+## Building the image locally
+If you want to build the Docker image locally:
+
+1. **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
+    cd dsci-310-group-8
+    ```
+
+2. **Build the image**:
+
+    ```bash
+    docker build -t dsci-310-group-8-project-docker .
+    ```
+
+3. **Run the container**:
+
+    ```bash
+    docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker
+    ```
+
+# How to Run the Analysis
+To reproduce the analysis, follow these steps:
+
+1. **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
+    cd dsci-310-group-8
+    ```
+
 2. **Set Up the Environment**:
-    - **Install Docker**: Follow the instructions for your operating system from the [Docker website](https://docs.docker.com/get-docker/).
-    - **Build Docker Image**: 
-      ```bash
-      docker build -t dsci-310-group-8-project-docker:v1.0 .
-      ```
-    - **Run the Docker Container**: 
-      ```bash
-      docker run -it -p 8787:8787 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker:v1.0
-      ```
-    - **Access the RStudio server**: Open your web browser and go to [http://localhost:8787](http://localhost:8787). Use the following credentials to log in:
-      - **Username**: `rstudio`
-      - **Password**: `rstudio`
+
+Use the Docker container as described in the "Docker Container Setup" section above
+Access the RStudio server at http://localhost:8787
 
 3. **Run the Analysis**:
-    - **Open the RStudio environment**.
-    - **Navigate to the `src` directory**:
-      ```bash
-      cd /home/rstudio/project/src
-      ```
-    - **Run the analysis scripts** (e.g., `analysis.R`):
-      ```r
-      source('analysis.R')
-      ```
+
+Open the RStudio environment
+Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
 
 # Dependencies
 The following dependencies are required to run the analysis:
@@ -87,6 +126,7 @@ The following dependencies are required to run the analysis:
 ## Software:
     - Docker
     - R (version 4.3.1 or higher)
+    - Docker Compose (recommended)
 
 ## R Packages:
     - tidyverse
