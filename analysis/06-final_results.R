@@ -2,9 +2,10 @@
 Script to display the final results of our model
 Usage:
   06-final_results.R 
-  --input=<input> 
+  --input_data=<input> 
+  --input_model=<input>   
   --output_plot=<output> 
-  --output_table=<output>
+  --output_table=<output> 
 
 Options:
   --input_data=<input>   Path to cleaned testing dataset.
@@ -19,7 +20,7 @@ library(ggplot2)
 
 doc <- docopt("
 Usage:
-  06-final_results.R --input_data=<input> --input_model=<input>
+  analysis/06-final_results.R --input_data=<input> --input_model=<input>
   --output_plot=<output> --output_table=<output>
 ")
 test_data <- read_csv(doc$input_data)

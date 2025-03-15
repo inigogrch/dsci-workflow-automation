@@ -1,7 +1,7 @@
 "
 Script to create our training set from the raw data
 Usage:
-  03-training_split.R --input=<input> 
+  analysis/03-training_split.R --input=<input> 
   --output_train=<output> --output_test=<output>
 
 Options:

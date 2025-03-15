@@ -3,7 +3,7 @@
 "
 Script to download the U.S. Census Adult dataset and save it locally.
 Usage:
-  01-download_data.R --url=<url> --output=<output>
+  analysis/01-download_data.R --url=<url> --output=<output>
 
 Options:
   --url=<url>       URL to download the dataset.

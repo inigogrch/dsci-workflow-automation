@@ -1,7 +1,8 @@
 "
 Script to train a logistic regression model and display its outputs.
 Usage:
-  05-model.R --input=<input> --output_model=<output> --output_plot=<output>
+  analysis/05-model.R --input=<input> 
+  --output_model=<output> --output_plot=<output>
 
 Options:
   --input=<input>   Path to cleaned training dataset.

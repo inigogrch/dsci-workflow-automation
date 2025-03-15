@@ -1,7 +1,8 @@
 "
 Script to perform exploratory data analysis (EDA).
 Usage:
-  04-eda.R --input=<input> --output_plot=<output> --output_table=<output>
+  analysis/04-eda.R --input=<input> 
+  --output_plot=<output> --output_table=<output> 
 
 Options:
   --input=<input>   Path to cleaned training dataset.
