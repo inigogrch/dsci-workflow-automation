@@ -1,13 +1,16 @@
 .PHONY: all clean report
 
-all: analysis/data/clean_data.csv \
-     analysis/output/eda_plot.png \
-     analysis/output/final_model.rds \
-     analysis/output/model_auc.png \
-     analysis/output/conf_matrix.png \
-     analysis/output/final_metrics.csv \
-     index.html \
-     docs/.nojekyll
+all:
+	make clean
+	make index.html
+# analysis/data/clean_data.csv \
+    #  analysis/output/eda_plot.png \
+    #  analysis/output/final_model.rds \
+    #  analysis/output/model_auc.png \
+    #  analysis/output/conf_matrix.png \
+    #  analysis/output/final_metrics.csv \
+    #  index.html \
+    #  docs/.nojekyll
 
 analysis/data:
 	mkdir -p analysis/data/raw analysis/data/clean
