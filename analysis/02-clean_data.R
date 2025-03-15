@@ -17,6 +17,7 @@ Usage:
   02_clean_data.R --input=<input> --output=<output>
 ")
 
+<<<<<<< HEAD
 data <- read.csv(doc$input, col_names = FALSE, na.strings = "?")
 
 print("Column names in dataset:")
@@ -26,6 +27,9 @@ if (!"income" %in% colnames(data)) {
   stop("Error: The dataset does not contain an 'income' column.")
 }
 
+=======
+data <- read_csv(doc$input, col_names = FALSE, na.strings = "?")
+>>>>>>> c776e4b (final abstractions)
 data <- na.omit(data)
 colnames(data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
