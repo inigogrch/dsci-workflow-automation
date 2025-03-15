@@ -10,14 +10,15 @@ Options:
 "
 
 library(docopt)
-library(caret)
 library(readr)
+library(ggplot2)
+library(pROC)
 
 doc <- docopt("
 Usage:
   05-model.R --input=<input> --output_model=<output> --output_plot=<output>
 ")
-train_data <- read.csv(doc$input)
+train_data <- read_csv(doc$input)
 
 # Model abstraction
 selected_vars <- c(
@@ -34,7 +35,12 @@ saveRDS(full_model, doc$output_model)
 actual_classes <- train_data$income
 predicted_probs <- predict(full_model, type = "response")
 roc_curve <- roc(actual_classes, predicted_probs)
-roc_plot <- plot(roc_curve, main = "ROC Curve of Full Model")
+roc_plot <- ggroc(roc_curve, legacy.axes = TRUE) + 
+  xlim(0, 1) +
+  ylim(0, 1) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "gray") +
+  coord_equal() +
+  ggtitle("ROC Curve of Full Model")
 ggsave(doc$output_plot, plot = roc_plot)
 
 message("Model trained and AUC visualization created successfully.")
