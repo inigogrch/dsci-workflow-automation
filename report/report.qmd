@@ -230,15 +230,7 @@ To evaluate the model, we will use the ROC curve to visualize the trade-off betw
 The @fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model `{r} auc_value` is significantly above 0.5, indicating that the model perform much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
 
 ### Test the Model on the Testing Dataset
-Now, we perform the classification analysis and apply the model to the testing dataset (test_data). 
-
-```{r}
-#| vscode: {languageId: r}
-test_pred_probs <- predict(full_model, newdata = test_data[, c("age", "hours_per_week", "education_num")], type = "response")
-test_pred_class <- ifelse(test_pred_probs > 0.5, ">50K", "<=50K")
-```
-
-We then visualize the results of the analysis in a confusion matrix.
+Now, we perform the classification analysis and apply the model to the testing dataset and visualize the results of the analysis in a confusion matrix.
 
 ![Confusion Matrix of Full Model on Testing Set](../results/final/confusion.png){#fig-confusion-plot}
 
