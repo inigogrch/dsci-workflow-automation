@@ -18,6 +18,7 @@ Usage:
 ")
 
 data <- read.csv(doc$input, col_names = FALSE, na.strings = "?")
+
 data <- na.omit(data)
 colnames(data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
