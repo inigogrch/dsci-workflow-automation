@@ -1,23 +1,40 @@
 "
-Script to train a logistic regression model.
+Script to train a logistic regression model and display its outputs.
 Usage:
-  04-model.R --input=<input> --output=<output>
+  05-model.R --input=<input> --output_model=<output> --output_plot=<output>
 
 Options:
-  --input=<input>   Path to cleaned dataset.
-  --output=<output> Path to save model results.
+  --input=<input>   Path to cleaned training dataset.
+  --output_model=<output> Path to save model results.
+  --output_plot=<output> Path to save model AUC visualization.
 "
 
 library(docopt)
 library(caret)
 library(readr)
 
-doc <- docopt("s
+doc <- docopt("
 Usage:
-  0-model.R --input=<input> --output=<output>
+  05-model.R --input=<input> --output_model=<output> --output_plot=<output>
 ")
+train_data <- read.csv(doc$input)
 
-data <- read.csv(doc$input)
-model <- glm(income ~ ., data = data, family = binomial)
-saveRDS(model, doc$output)
-message("Model trained successfully.")
+# Model abstraction
+selected_vars <- c(
+  "age",
+  "education_num",
+  "hours_per_week"
+)
+formula_reduced <- as.formula(paste("income ~",
+                                    paste(selected_vars, collapse = " + ")))
+full_model <- glm(formula_reduced, data = train_data, family = binomial)
+saveRDS(full_model, doc$output_model)
+
+# ROC abstraction
+actual_classes <- train_data$income
+predicted_probs <- predict(full_model, type = "response")
+roc_curve <- roc(actual_classes, predicted_probs)
+roc_plot <- plot(roc_curve, main = "ROC Curve of Full Model")
+ggsave(doc$output_plot, plot = roc_plot)
+
+message("Model trained and AUC visualization created successfully.")

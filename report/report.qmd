@@ -130,20 +130,20 @@ We then load the dataset into R by referencing the downloaded file path.
 #| tbl-cap: Raw Adult Income Dataset 
 #| echo: false
 income <- read_csv("../data/raw/adult-raw.csv")
-knitr::kable(income)
+knitr::kable(head(income))
 ```
 
 
 ### Data Wrangling
 
-We will begin by removing missing values from the @tbl-raw-adult-dataset. Additionally, we will convert the income column into a factor variable to ensure R treats it as a categorical variable. This transformation is crucial for statistical modeling and visualization, especially when income is used as a binary outcome in logistic regression.
+We will begin by cleaning the @tbl-raw-adult-dataset. First, we remove missing values and convert the income column into a factor variable to ensure R treats it as a categorical variable. This transformation is crucial for statistical modeling and visualization, especially when income is used as a binary outcome in logistic regression. We also create new column names to streamline readability and analysis.
 
 ```{r}
 #| label: tbl-cleaned-adult-dataset
 #| tbl-cap: Cleaned Adult Income Dataset 
 #| echo: false
 income_clean <- read_csv("../data/clean/adult-cleaned.csv")
-knitr::kable(income_clean)
+knitr::kable(head(income_clean))
 ```
 
 
@@ -154,7 +154,7 @@ After removing missing values from the @tbl-cleaned-adult-dataset, we randomly s
 #| tbl-cap: Training Set of Adult Dataset
 #| echo: false
 income_training <- read_csv("../data/clean/adult-training.csv")
-knitr::kable(income_training)
+knitr::kable(head(income_training))
 ```
 
 
