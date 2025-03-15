@@ -3,14 +3,6 @@
 all:
 	make clean
 	make index.html
-# analysis/data/clean_data.csv \
-    #  analysis/output/eda_plot.png \
-    #  analysis/output/final_model.rds \
-    #  analysis/output/model_auc.png \
-    #  analysis/output/conf_matrix.png \
-    #  analysis/output/final_metrics.csv \
-    #  index.html \
-    #  docs/.nojekyll
 
 analysis/data:
 	mkdir -p analysis/data/raw analysis/data/clean
@@ -54,5 +46,6 @@ index.html: report/report.qmd analysis/output/eda_plot.png analysis/output/model
 clean:
 	rm -f analysis/output/*
 	rm -f analysis/data/clean/*
+	rm -f results/*
 	rm -rf docs/*
 	rm -f Rplots.pdf
