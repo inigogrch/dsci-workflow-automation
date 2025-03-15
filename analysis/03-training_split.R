@@ -1,7 +1,7 @@
 "
 Script to create our training set from the raw data
 Usage:
-  03-training_split.R --input=<input> 
+  03-training_split.R --input=<input>
   --output_train=<output> --output_test=<output>
 
 Options:
@@ -16,7 +16,7 @@ library(readr)
 
 doc <- docopt("
 Usage:
-  03-training_split.R --input=<input> 
+  03-training_split.R --input=<input>
   --output_train=<output> --output_test=<output>
 ")
 
@@ -24,11 +24,12 @@ set.seed(1234)
 
 cleaned_data <- read_csv(doc$input)
 sample_size <- round(0.1 * nrow(cleaned_data))
-income_sample <- cleaned_data %>% 
+income_sample <- cleaned_data %>%
   sample_n(size = sample_size)
 
 train_indices <- sample(seq_len(nrow(income_sample)),
-                        size = 0.8 * nrow(income_sample))
+  size = 0.8 * nrow(income_sample)
+)
 train_data <- income_sample[train_indices, ]
 test_data <- income_sample[-train_indices, ]
 
