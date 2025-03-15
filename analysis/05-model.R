@@ -1,7 +1,7 @@
 "
 Script to train a logistic regression model and display its outputs.
 Usage:
-  05-model.R --input=<input> --output_model=<output> --output_plot=<output>
+  analysis/05-model.R --input=<input> --output_model=<output> --output_plot=<output>
 
 Options:
   --input=<input>   Path to cleaned training dataset.
@@ -16,7 +16,7 @@ library(pROC)
 
 doc <- docopt("
 Usage:
-  05-model.R --input=<input> --output_model=<output> --output_plot=<output>
+  analysis/05-model.R --input=<input> --output_model=<output> --output_plot=<output>
 ")
 train_data <- read_csv(doc$input)
 
@@ -26,6 +26,7 @@ selected_vars <- c(
   "education_num",
   "hours_per_week"
 )
+train_data$income <- factor(train_data$income, levels = c("<=50K", ">50K"))
 formula_reduced <- as.formula(paste("income ~",
                                     paste(selected_vars, collapse = " + ")))
 full_model <- glm(formula_reduced, data = train_data, family = binomial)

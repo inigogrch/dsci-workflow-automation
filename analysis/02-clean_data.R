@@ -17,7 +17,7 @@ Usage:
   02_clean_data.R --input=<input> --output=<output>
 ")
 
-data <- read_csv(doc$input, col_names = FALSE, na.strings = "?")
+data <- read_csv(doc$input, col_names = FALSE)
 data <- na.omit(data)
 colnames(data) <- c("age", "workclass", "fnlwgt", "education", "education_num",
 "marital_status", "occupation", "relationship", "race", "sex", "capital_gain",  # nolint
