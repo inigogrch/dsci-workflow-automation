@@ -11,7 +11,7 @@
 # Project Summary:
 This project aims to investigate income prediction using the UCI Adult Dataset, which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, we aim to effectively predict income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy.
 
-Some tools we will use include:
+Some tools and concepts we will include:
 - R programming language for data loading, wrangling, cleaning, and analysis.
 - Docker to containerize our environments.
 - A variety of R packages, including tidyverse, broom, and repr.
@@ -32,8 +32,54 @@ Future Research:
 - Demographic Intersections: Investigating how race, gender, and marital status interact with income could enhance model accuracy.
 - Health & Disability: Including health variables could highlight additional barriers affecting earnings potential.
 
-# Docker Container Setup  
-This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis. 
+# How to Run the Analysis
+To reproduce the analysis, follow these steps:
+
+1. **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
+    cd dsci-310-group-8
+    ```
+
+2. **Set Up the Environment**:
+
+Use the Docker container as described in the "Docker Container Setup" section above
+Access the RStudio server at http://localhost:8787
+
+3. **Run the Analysis**:
+
+Open the RStudio environment
+Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
+
+# Dependencies
+The following dependencies are required to run the analysis:
+
+## Software:
+    - Docker
+    - R (version 4.3.1 or higher)
+    - Docker Compose (recommended)
+
+## R Packages:
+    - tidyverse
+    - ggplot2
+    - dplyr
+    - knitr
+    - broom
+    - repr
+    - infer
+    - gridExtra
+    - farway
+    - mitools
+    - glmnet
+    - cowplot
+    - modelr
+    - patchwork
+    - knitr
+    - pROC
+
+## Docker Container Setup
+This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis.
 
 ## Using Docker with Docker Compose (Recommended)
 
@@ -100,55 +146,19 @@ If you want to build the Docker image locally:
     docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker
     ```
 
-# How to Run the Analysis
-To reproduce the analysis, follow these steps:
-
-1. **Clone the repository**:
-
-    ```bash
-    git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
-    cd dsci-310-group-8
-    ```
-
-2. **Set Up the Environment**:
-
-Use the Docker container as described in the "Docker Container Setup" section above
-Access the RStudio server at http://localhost:8787
-
-3. **Run the Analysis**:
-
-Open the RStudio environment
-Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
-
-# Dependencies
-The following dependencies are required to run the analysis:
-
-## Software:
-    - Docker
-    - R (version 4.3.1 or higher)
-    - Docker Compose (recommended)
-
-## R Packages:
-    - tidyverse
-    - ggplot2
-    - dplyr
-    - knitr
-    - broom
-    - repr
-    - infer
-    - gridExtra
-    - farway
-    - mitools
-    - glmnet
-    - cowplot
-    - modelr
-    - patchwork
-    - knitr
-    - pROC
+## Running the Makefile (Our Analysis)
+1. Ensure you go to Settings in the cloned github repository.
+2. Click Pages.
+3. Under the sub-heading, branch, select 'main'.
+4. Select the folder '/docs'.
+5. Now, in the terminal application, type ```bash make all ```.
+6. Go to '<> Code' in the same repository.
+7. On the top right where it displays, 'About', click the gear icon.
+8. Under the 'Website' heading, click 'Use your GitHub Pages website'.
+9. Now access our analysis through this website!
 
 # Licenses
 
-## License
 This project is dual-licensed:
 
 - **Code** (all scripts, programs, and automation files) is licensed under the **MIT License**. See the `LICENSE` file.
