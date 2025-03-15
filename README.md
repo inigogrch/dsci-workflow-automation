@@ -147,7 +147,12 @@ The following dependencies are required to run the analysis:
     - pROC
 
 # Licenses
-This project is licensed under the terms of the Creative Commons Legal Code. See the LICENSE.md file for details.
+
+## License
+This project is dual-licensed:
+
+- **Code** (all scripts, programs, and automation files) is licensed under the **MIT License**. See the `LICENSE` file.
+- **Documentation, reports, and datasets** are licensed under **Creative Commons Attribution 4.0 (CC BY 4.0)**. See `LICENSE-docs`.
 
 # Contributing
 Contributions to this project are welcome. Please follow the CONTRIBUTING.md if you'd like to contribute.
