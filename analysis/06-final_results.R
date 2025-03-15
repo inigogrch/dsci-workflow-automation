@@ -15,14 +15,15 @@ Options:
 library(docopt)
 library(caret)
 library(readr)
+library(ggplot2)
 
 doc <- docopt("
 Usage:
   06-final_results.R --input_data=<input> --input_model=<input>
   --output_plot=<output> --output_table=<output>
 ")
-test_data <- read.csv(doc$input_data)
-full_model <- doc$input_model
+test_data <- read_csv(doc$input_data)
+full_model <- readRDS(doc$input_model)
 
 # Conf Matrix abstraction
 test_pred_probs <- predict(full_model,
@@ -55,14 +56,14 @@ n <- tp + tn + fp + fn  # Total observations
 # Sensitivity (SN)
 sensitivity <- tp / (tp + fn)
 # Specificity (SP)
-specificity <- tp / (tn + fp)
+specificity <- tn / (tn + fp)
 # Precision (PR)
 precision <- tp / (tp + fp)
 # Accuracy (ACC)
 accuracy <- (tp + tn) / n
 # Cohen's Kappa (κ)
 observed_accuracy <- (tp + tn) / n
-expected_accuracy <- ((tp + fp) / n) * ((tp + fn) / n) + ((tp + fp) / n) * ((tp + fn) / n) # nolint
+expected_accuracy <- ((tp + fp) / n) * ((tp + fn) / n) + ((tn + fp) / n) * ((tn + fn) / n) # nolint
 kappa <- (observed_accuracy - expected_accuracy) / (1 - expected_accuracy)
 metrics_df <- data.frame(
   Metric = c("Sensitivity", "Specificity", "Precision", "Accuracy", "Cohen's Kappa"), # nolint
@@ -70,4 +71,4 @@ metrics_df <- data.frame(
 )
 write_csv(metrics_df, doc$output_table)
 
-message("Model trained and AUC visualization created successfully.")
+message("Confusion matrix and final results table created successfully.")

@@ -11,8 +11,10 @@ Options:
 
 library(docopt)
 library(ggplot2)
-library(dplyr)
 library(readr)
+library(GGally)
+library(tidyverse)
+library(repr)
 
 doc <- docopt("
 Usage:
