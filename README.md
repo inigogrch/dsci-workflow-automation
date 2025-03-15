@@ -64,19 +64,11 @@ The following dependencies are required to run the analysis:
     - tidyverse
     - ggplot2
     - dplyr
-    - knitr
-    - broom
+    - readr
+    - docopt
     - repr
-    - infer
-    - gridExtra
-    - farway
-    - mitools
-    - glmnet
-    - cowplot
-    - modelr
-    - patchwork
-    - knitr
     - pROC
+    - GGally
 
 # Docker Container Setup
 This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis.
