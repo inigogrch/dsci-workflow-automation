@@ -9,9 +9,11 @@ format:
         toc: true
         number-sections: true
         embed-resources: true
+        fig-numbering: true
     pdf:
         toc: true
         number-sections: true
+        fig-numbering: true
 bibliography: references.bib
 execute: 
     echo: false
@@ -66,14 +68,6 @@ Table: Variable Index and Descriptions {#tbl-variables}
 | 13             | native-country      | categorical    | Country of origin |
 | 14             | income              | categorical    | Income level (<=50K, >50K) |
 
-<!-- ### Descriptive Statistics
-
-- **Age**: Ranges from 17 to 90, with an average age of 38.6 years.
-- **Education-num**: Has values from 1 to 16, representing various education levels.
-- **Capital-gain**: Ranges from 0 to 99,999, with most values concentrated around zero, indicating that high capital gains are rare.
-- **Capital-loss**: Similar to capital gain, most values are zero.
-- **Hours-per-week**: Has a mean of 40.4 hours, aligning with typical full-time work expectations.
-- **Income**: Target variable, classified into two categories: <=50K and >50K. -->
 
 This [dataset](https://archive.ics.uci.edu/dataset/2/adult) includes both **categorical** and **numerical** variables, making it suitable for analyzing relationships between **demographic attributes** and **income levels**. Further **exploration and preprocessing** may involve handling **missing values** and **encoding categorical features**.  
 
@@ -99,25 +93,11 @@ We will start by importing the necessary R libraries for data analysis and prepr
 
 ```{r}
 #| vscode: {languageId: r}
-install.packages(c("broom", "repr", "infer", "gridExtra", "faraway",  
-                   "mltools", "leaps", "glmnet", "cowplot", "modelr",  
-                   "tidyverse", "ggplot2", "dplyr", "GGally", "patchwork", "knitr", "pROC"))
 
 library(broom)
-library(repr)
-library(infer)
-library(gridExtra)
-library(faraway)
-library(mltools)
-library(leaps)
-library(glmnet)
-library(cowplot)
-library(modelr)
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
-library(GGally)
-library(patchwork)
 library(knitr)
 library(pROC)
 ```
@@ -125,8 +105,10 @@ library(pROC)
 We then load the dataset into R by referencing the downloaded file path. 
 
 ```{r}
-#| label:tbl-raw-adult-dataset
+#| label: tbl-raw-adult-dataset
 #| tbl-cap: "Raw Adult Income Dataset"
+
+
 income <- read_csv("../data/raw/adult_raw.csv")
 knitr::kable(head(income))
 ```
@@ -139,6 +121,8 @@ We will begin by cleaning the @tbl-raw-adult-dataset. First, we remove missing v
 ```{r}
 #| label: tbl-cleaned-adult-dataset
 #| tbl-cap: "Cleaned Adult Income Dataset"
+
+
 income_clean <- read_csv("../data/clean/adult_clean.csv")
 n_obs <- nrow(income_clean)
 sample_size <- round(0.1 * nrow(income_clean))
@@ -151,6 +135,8 @@ After removing missing values from the @tbl-cleaned-adult-dataset, we randomly s
 ```{r}
 #| label: tbl-training-adult-dataset
 #| tbl-cap: "Training Set of Adult Dataset"
+
+
 income_training <- read_csv("../data/clean/adult_training.csv")
 n_training <- nrow(income_training)
 knitr::kable(head(income_training))
@@ -177,6 +163,8 @@ The following code generates summary tables for continuous variables, with the c
 ```{r}
 #| label: tbl-summary-statistics
 #| tbl-cap: "Summary Statistics Table of Relevant Predictors"
+
+
 summary_statistics_table <- read_csv("../results/eda/summary_statistics.csv")
 # Age stats
 age_stats <- summary_statistics_table %>% filter(name == "age")
@@ -220,6 +208,8 @@ In the following code, we fit the logistic regression model to the @tbl-training
 ```{r}
 #| label: tbl-logreg-summary
 #| tbl-cap: "Summary of the Logistic Regression Model"
+
+
 income_training <- read_csv("../data/clean/adult_training.csv")
 log_reg_model <- readRDS("../results/model/log_reg_model.RDS")
 
@@ -243,23 +233,25 @@ The @fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained 
 ### Test the Model on the Testing Dataset
 Now, we perform the classification analysis and apply the model to the testing dataset and visualize the results of the analysis in a confusion matrix.
 
-![Confusion Matrix of Full Model on Testing Set](../results/final/conf_matrix_plot.png){#fig-confusion-plot}
+![Confusion Matrix of Full Model on Testing Set](../results/model/conf_matrix_plot.png){#fig-confusion-plot}
 
 ### Classification Results and Model Metrics
 
 ```{r}
-#| label: 
+#| label: tbl-classification-results
 #| tbl-cap: "Classification Results and Model Metrics"
-metrics_df <- read.csv("metrics.csv")
+
+
+metrics_df <- read_csv("../results/model/summary_statistics.csv")
 sensitivity <- metrics_df$Value[metrics_df$Metric == "Sensitivity"] * 100
 specificity <- metrics_df$Value[metrics_df$Metric == "Specificity"] * 100
 precision <- metrics_df$Value[metrics_df$Metric == "Precision"] * 100
 accuracy <- metrics_df$Value[metrics_df$Metric == "Accuracy"] * 100
 kappa <- metrics_df$Value[metrics_df$Metric == "Cohen's Kappa"] * 100
-knitr::kable(metrics_df)knitr::kable(metrics_df)
+knitr::kable(metrics_df)
 ```
 
-
+From our @tbl-classification-results, we observe the following metrics:
 1. **Sensitivity (SN): `{r} sensitivity`%** - The model correctly identifies `{r} sensitivity`% of higher-income individuals.
 2. **Specificity (SP): `{r} specificity`%** - `{r} specificity`% of lower-income individuals are correctly classified.
 3. **Precision (PR): `{r} precision`%** - `{r} precision`% of predicted >50K individuals actually earn >50K, indicating many false positives.
