@@ -28,7 +28,7 @@ editor: source
 
 ## (1) Summary
 
-This report investigates income prediction using the [UCI Adult Dataset](https://archive.ics.uci.edu/dataset/2/adult)[@kohavi1996], which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, the analysis effectively predicted income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy. The findings underscore that while the model achieves robust overall accuracy, there are challenges with false positives that warrant further refinement.
+This report investigates income prediction using the [UCI Adult Dataset](https://archive.ics.uci.edu/dataset/2/adult)[@kohavi1996], which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, the analysis effectively predicted income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ `{r} auc_value`), sensitivity, specificity, and accuracy. The findings underscore that while the model achieves robust overall accuracy, there are challenges with false positives that warrant further refinement.
 
 The insights derived from this study not only validate the role of education and work intensity in income determination but also suggest avenues for future research, such as integrating geographic and intersectional demographic variables to capture the complexities of income disparities. Overall, the analysis offers a comprehensive approach to understanding income inequality and provides actionable information for policy makers and individuals aiming to navigate economic opportunities.
 
@@ -171,7 +171,7 @@ To focus on the most relevant variables, we will exclude columns that do not dir
 #| tbl-cap: Final Training Set with Relevant Variables
 #| echo: false
 income_training_final <- read_csv("../data/clean/final-adult-training.csv")
-knitr::kable(income_training_final)
+knitr::kable(income_training_final)knitr::kable(income_training_final)
 ```
 
 
@@ -240,75 +240,30 @@ test_pred_class <- ifelse(test_pred_probs > 0.5, ">50K", "<=50K")
 
 We then visualize the results of the analysis in a confusion matrix.
 
-```{r}
-#| vscode: {languageId: r}
-confusion_matrix <- table(Predicted = test_pred_class, Actual = test_data$income)
-
-conf_mat_df <- as.data.frame(confusion_matrix)
-colnames(conf_mat_df) <- c("Actual", "Predicted", "Freq")
-
-ggplot(conf_mat_df, aes(x = Predicted, y = Actual, fill = Freq)) +
-  geom_tile() +
-  geom_text(aes(label = Freq), color = "white", size = 6) +
-  scale_fill_gradient(low = "lightblue", high = "darkblue") +
-  theme_minimal(base_size = 14) +
-  labs(
-    title = "Confusion Matrix",
-    x = "Predicted Class",
-    y = "Actual Class"
-  )
-```
-
-#### Figure 3.3: Confusion Matrix of Full Model on Testing Set
+![Confusion Matrix of Full Model on Testing Set](../results/final/confusion.png){#fig-confusion-plot}
 
 ### Classification Results and Model Metrics
 
-- **True Positives (TP):** 40 predicted >50K correctly.
-- **True Negatives (TN):** 428 predicted <=50K correctly.
-- **False Positives (FP):** 110 predicted >50K incorrectly.
-- **False Negatives (FN):** 26 predicted <=50K incorrectly.
-
 ```{r}
-#| vscode: {languageId: r}
-# Confusion matrix values
-TP <- 40  # True Positives
-TN <- 428  # True Negatives
-FP <- 110  # False Positives
-FN <- 26  # False Negatives
-n <- TP + TN + FP + FN  # Total observations
-
-# Sensitivity (SN)
-sensitivity <- TP / (TP + FN)
-
-# Specificity (SP)
-specificity <- TN / (TN + FP)
-
-# Precision (PR)
-precision <- TP / (TP + FP)
-
-# Accuracy (ACC)
-accuracy <- (TP + TN) / n
-
-# Cohen's Kappa (κ)
-observed_accuracy <- (TP + TN) / n
-expected_accuracy <- ((TP + FP) / n) * ((TP + FN) / n) + ((TN + FP) / n) * ((TN + FN) / n)
-kappa <- (observed_accuracy - expected_accuracy) / (1 - expected_accuracy)
-
-metrics_df <- data.frame(
-  Metric = c("Sensitivity", "Specificity", "Precision", "Accuracy", "Cohen's Kappa"),
-  Value  = c(sensitivity, specificity, precision, accuracy, kappa)
-)
-
-metrics_df
+#| label: 
+#| tbl-cap: Classification Results and Model Metrics
+#| echo: false
+metrics_df <- read.csv("metrics.csv")
+sensitivity <- metrics_df$Value[metrics_df$Metric == "Sensitivity"] * 100
+specificity <- metrics_df$Value[metrics_df$Metric == "Specificity"] * 100
+precision <- metrics_df$Value[metrics_df$Metric == "Precision"] * 100
+accuracy <- metrics_df$Value[metrics_df$Metric == "Accuracy"] * 100
+kappa <- metrics_df$Value[metrics_df$Metric == "Cohen's Kappa"] * 100
+knitr::kable(metrics_df)knitr::kable(metrics_df)
 ```
 
 #### Table 3.7: Summary of Model Evaluation Metrics
 
-1. **Sensitivity (SN): 0.61** - The model correctly identifies 61% of higher-income individuals.
-2. **Specificity (SP): 0.80** - 80% of lower-income individuals are correctly classified.
-3. **Precision (PR): 0.27** - 27% of predicted >50K individuals actually earn >50K, indicating many false positives.
-4. **Accuracy (ACC): 0.77** - 77% of overall predictions are correct.
-5. **Cohen's Kappa (κ): 0.26** - Moderate agreement, better than random chance but room for improvement.
+1. **Sensitivity (SN): `{r} sensitivity`%** - The model correctly identifies `{r} sensitivity`% of higher-income individuals.
+2. **Specificity (SP): `{r} specificity`%** - `{r} specificity`% of lower-income individuals are correctly classified.
+3. **Precision (PR): `{r} precision`%** - `{r} precision`% of predicted >50K individuals actually earn >50K, indicating many false positives.
+4. **Accuracy (ACC): `{r} accuracy`%** - `{r} accuracy`% of overall predictions are correct.
+5. **Cohen's Kappa (κ): `{r} kappa`%** - Moderate agreement, better than random chance but room for improvement.
 
 ### Interpretation
 - Strong specificity, but moderate sensitivity and low precision suggest improvements in identifying high-income individuals.
@@ -318,13 +273,13 @@ metrics_df
 ## (4) Discussion
 #### Summary of Findings and Implications
 
-- The logistic regression model showed strong predictive power (AUC = 0.7965), demonstrating that the model can effectively distinguish income levels better than a baseline.
+- The logistic regression model showed strong predictive power (AUC =`{r} auc_value`), demonstrating that the model can effectively distinguish income levels better than a baseline.
 - These findings can inform policies aimed at reducing income inequality. Education and hours worked were key predictors, emphasizing the need for skill development and work-life balance.
 - Understanding the factors behind income disparities can help individuals make more informed career decisions and pursue opportunities for skill enhancement.
 
 #### Expectations and Results
 
-- The model’s AUC (0.7965) is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
+- The model’s AUC (`{r} auc_value`) is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
   - **Age** correlates with experience, leading to higher salaries.
   - **Education** increases income, with those holding a degree earning significantly more.
   - **Hours Worked** reflects labor input, where more hours can translate to higher pay.
