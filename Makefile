@@ -30,9 +30,8 @@ analysis/data/clean_data.csv: analysis/02-clean_data.R analysis/data/raw/adult.d
 	Rscript analysis/02-clean_data.R --input=analysis/data/raw/adult.data \
 	    --output=analysis/data/clean_data.csv
 
-analysis/output/eda_plot.png: analysis/03-eda.R analysis/data/clean_data.csv | analysis/output
-	Rscript analysis/03-eda.R --input=analysis/data/clean_data.csv \
-	    --output=analysis/output/eda_plot.png
+analysis/output/eda_plot.png: analysis/03-eda.R analysis/data/clean_data.csv
+	Rscript analysis/03-eda.R --input=analysis/data/clean_data.csv --output=analysis/output/eda_plot.png
 
 analysis/output/final_model.rds analysis/output/model_auc.png: analysis/05-model.R analysis/data/clean_data.csv | analysis/output
 	Rscript analysis/05-model.R --input=analysis/data/clean_data.csv \
