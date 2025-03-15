@@ -2,8 +2,8 @@
 
 all: analysis/data/clean_data.csv analysis/output/eda_plot.png analysis/output/final_model.rds index.html
 
-analysis/data:
-	mkdir -p analysis/data
+analysis/data/raw:
+	mkdir -p analysis/data/raw
 
 analysis/output:
 	mkdir -p analysis/output
@@ -11,8 +11,11 @@ analysis/output:
 docs:
 	mkdir -p docs
 
-analysis/data/clean_data.csv: analysis/02-clean_data.R analysis/data/census+income/adult.data
-	Rscript analysis/02-clean_data.R --input=analysis/data/census+income/adult.data --output=analysis/data/clean_data.csv
+analysis/data/raw/adult.data: analysis/01-download_data.R | analysis/data/raw
+	Rscript analysis/01-download_data.R --url="https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data" --output=analysis/data/raw/adult.data
+
+analysis/data/clean_data.csv: analysis/02-clean_data.R analysis/data/raw/adult.data
+	Rscript analysis/02-clean_data.R --input=analysis/data/raw/adult.data --output=analysis/data/clean_data.csv
 
 analysis/output/eda_plot.png: analysis/03-eda.R analysis/data/clean_data.csv
 	Rscript analysis/03-eda.R --input=analysis/data/clean_data.csv --output=analysis/output/eda_plot.png
