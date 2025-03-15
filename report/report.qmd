@@ -177,7 +177,7 @@ knitr::kable(income_training_final)
 
 Using our @tbl-final-training-adult-dataset, we create pairwise plots to examine relationships between continuous variables (`age`, `hours_per_week`, `education_num`) and the response variable, as well as associations among the input variables.
 
-![Pairwise Plot of Response and Predictors](../results/eda/pairwise-plot.png){#fig-pairwise-plot}
+![Pairwise Plot of Response and Predictors](../results/eda/pairwise_plot.png){#fig-pairwise-plot}
 
 
 The @fig-pairwise-plot show that `age` is right-skewed, `hours_per_week` peaks around 40, and `education_num` has a bimodal distribution. Weak correlations (< 0.6) suggest minimal multicollinearity.
@@ -188,7 +188,7 @@ The following code generates summary tables for continuous variables, with the c
 #| label: tbl-summary-statistics
 #| tbl-cap: Summary Statistics Table of Relevant Predictors
 #| echo: false
-summary_statistics_table <- read_csv("../results/eda/summary-statistics.csv")
+summary_statistics_table <- read_csv("../results/eda/summary_statistics.csv")
 knitr::kable(summary_statistics_table)
 ```
 
@@ -225,7 +225,7 @@ We can observe from the @tbl-logreg-summary that all predictors were deemed sign
 ### Visualizing the ROC Curve
 To evaluate the model, we will use the ROC curve to visualize the trade-off between sensitivity and specificity across classification thresholds. The AUC (Area Under the Curve) will be calculated to quantify model performance, with values closer to 1 indicating strong discrimination and values near 0.5 suggesting random guessing.
 
-![ROC Curve of the Logistic Regression Model](../results/model/roc-curve.png){#fig-roc-curve}
+![ROC Curve of the Logistic Regression Model](../results/model/roc_plot.png){#fig-roc-curve}
 
 The @fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model `{r} auc_value` is significantly above 0.5, indicating that the model perform much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
 

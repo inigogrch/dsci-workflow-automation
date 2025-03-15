@@ -1,7 +1,7 @@
 "
 Script to clean and preprocess the dataset.
 Usage:
-  analysis/02-clean_data.R --input=<input> --output=<output>
+  02-clean_data.R --input=<input> --output=<output>
 
 Options:
   --input=<input>   Path to raw dataset.
