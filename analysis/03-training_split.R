@@ -19,8 +19,9 @@ Usage:
 
 set.seed(1234)
 
-sample_size <- 0.1 * nrow(doc$input)
-income_sample <- doc$input %>% 
+cleaned_data <- read_csv(doc$input)
+sample_size <- 0.1 * nrow(cleaned_data)
+income_sample <- cleaned_data %>% 
   sample_n(size = sample_size)
 
 train_indices <- sample(seq_len(nrow(income_sample)),
