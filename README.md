@@ -44,13 +44,13 @@ To reproduce the analysis, follow these steps:
 
 2. **Set Up the Environment**:
 
-Use the Docker container as described in the "Docker Container Setup" section above
-Access the RStudio server at http://localhost:8787
+- Use the Docker container as described in the "Docker Container Setup" section below
+- Access the RStudio server at http://localhost:8787
 
 3. **Run the Analysis**:
 
-Open the RStudio environment
-Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
+- Open the RStudio environment
+- Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
 
 # Dependencies
 The following dependencies are required to run the analysis:
@@ -78,7 +78,7 @@ The following dependencies are required to run the analysis:
     - knitr
     - pROC
 
-## Docker Container Setup
+# Docker Container Setup
 This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis.
 
 ## Using Docker with Docker Compose (Recommended)
@@ -115,7 +115,7 @@ If you prefer to use Docker without Docker Compose:
 2. **Run the container**:
 
     ```bash
-    docker run -d -p 8787:8787 -e PASSWORD=rstudio -v $(pwd):/home/rstudio/project zx2yizzy/dsci-310-group-8-project-docker:latest
+    docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project zx2yizzy/dsci-310-group-8-project-docker:latest
     ```
 
 3. **Access RStudio** by opening a web browser and going to:
@@ -146,7 +146,7 @@ If you want to build the Docker image locally:
     docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker
     ```
 
-## Running the Makefile (Our Analysis)
+# Running the Makefile (Our Analysis)
 1. Ensure you go to Settings in the cloned github repository.
 2. Click Pages.
 3. Under the sub-heading, branch, select 'main'.
