@@ -17,14 +17,15 @@ Usage:
   02_clean_data.R --input=<input> --output=<output>
 ")
 
-data <- read.csv(doc$input, col_names = FALSE, na.strings = "?")
+column_names <- c(
+  "age", "workclass", "fnlwgt", "education", "education_num",
+  "marital_status", "occupation", "relationship", "race", "sex",
+  "capital_gain", "capital_loss", "hours_per_week", "native_country", "income"
+)
+
+data <- read.csv(doc$input, header = FALSE, col.names = column_names, na.strings = "?")
 
 data <- na.omit(data)
-colnames(data) <- c(
-  "age", "workclass", "fnlwgt", "education", "education_num",
-  "marital_status", "occupation", "relationship", "race", "sex", "capital_gain", # nolint
-  "capital_loss", "hours_per_week", "native_country", "income"
-)
 
 print("Column names in dataset:")
 print(colnames(data))
