@@ -1,7 +1,7 @@
 "
 Script to display the final results of our model
 Usage:
-  06-final_results.R 
+  analysis/06-final_results.R 
   --input_data=<input> 
   --input_model=<input>   
   --output_plot=<output> 
@@ -14,14 +14,12 @@ Options:
   --output_table=<output> Path to save model final results.
 "
 library(docopt)
-library(caret)
 library(readr)
 library(ggplot2)
 
 doc <- docopt("
 Usage:
-  analysis/06-final_results.R --input_data=<input> --input_model=<input>
-  --output_plot=<output> --output_table=<output>
+  analysis/06-final_results.R --input_data=<input> --input_model=<input> --output_plot=<output> --output_table=<output>
 ")
 test_data <- read_csv(doc$input_data)
 full_model <- readRDS(doc$input_model)
