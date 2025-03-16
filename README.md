@@ -139,7 +139,7 @@ If you want to build the Docker image locally:
     ```
 
 # Running the Makefile (Our Analysis)
-1. Ensure you go to Settings in the cloned github repository.
+<!-- 1. Ensure you go to Settings in the cloned github repository.
 2. Click Pages.
 3. Under the sub-heading, branch, select 'main'.
 4. Select the folder '/docs'.
@@ -147,7 +147,8 @@ If you want to build the Docker image locally:
 6. Go to '<> Code' in the same repository.
 7. On the top right where it displays, 'About', click the gear icon.
 8. Under the 'Website' heading, click 'Use your GitHub Pages website'.
-9. Now access our analysis through this website!
+9. Now access our analysis through this website! -->
+1. In the terminal application, type ```bash make all ```.
 
 The ```bash make all ``` command does the following:
 	1.	Downloads the dataset
