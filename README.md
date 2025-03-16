@@ -149,6 +149,7 @@ If you want to build the Docker image locally:
 8. Under the 'Website' heading, click 'Use your GitHub Pages website'.
 9. Now access our analysis through this website! -->
 1. In the terminal application, type ```bash make all ```.
+2. Access the ```bash index.html``` to view results.
 
 The ```bash make all ``` command does the following:
 	1.	Downloads the dataset
