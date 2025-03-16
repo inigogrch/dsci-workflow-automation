@@ -28,7 +28,7 @@ editor: source
 
 ## (1) Summary
 
-This report investigates income prediction using the [UCI Adult Dataset](https://archive.ics.uci.edu/dataset/2/adult)[@kohavi1996], which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, the analysis effectively predicted income levels on test cases while assessing model performance using metrics like the ROC curve (AUC: Area Under the Curve), sensitivity, specificity, and accuracy. The findings underscore that while the model achieves robust overall accuracy, there are challenges with false positives that warrant further refinement.
+This report investigates income prediction using the [UCI Adult Dataset](https://archive.ics.uci.edu/dataset/2/adult)[@kohavi1996], which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over $50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, the analysis effectively predicted income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy. The findings underscore that while the model achieves robust overall accuracy, there are challenges with false positives that warrant further refinement.
 
 The insights derived from this study not only validate the role of education and work intensity in income determination but also suggest avenues for future research, such as integrating geographic and intersectional demographic variables to capture the complexities of income disparities. Overall, the analysis offers a comprehensive approach to understanding income inequality and provides actionable information for policy makers and individuals aiming to navigate economic opportunities.
 
@@ -46,7 +46,6 @@ The dataset selected for this project is the [UCI Adult Dataset](https://archive
 
 ### Variables and Their Types
 
-Table: Variable Index and Descriptions {#tbl-variables}
 
 | Variable Index | Variable Name       | Type      | Description |
 |----------------|---------------------|-----------|-------------|
@@ -65,6 +64,8 @@ Table: Variable Index and Descriptions {#tbl-variables}
 | 12             | hours-per-week      | continuous       | Average hours worked per week |
 | 13             | native-country      | categorical    | Country of origin |
 | 14             | income              | categorical    | Income level (<=50K, >50K) |
+
+#### Table 2.1: Description of U.S. Census Adult Dataset Variables
 
 <!-- ### Descriptive Statistics
 
@@ -122,12 +123,13 @@ library(knitr)
 library(pROC)
 ```
 
-We then load the dataset into R by referencing the downloaded file path. 
+We then load the dataset into R by referencing the downloaded file path.
 
 ```{r}
 #| label:tbl-raw-adult-dataset
-#| tbl-cap: "Raw Adult Income Dataset"
-income <- read_csv("../data/raw/adult_raw.csv")
+#| tbl-cap: Raw Adult Income Dataset 
+#| echo: false
+income <- read_csv("../data/raw/adult.csv")
 knitr::kable(head(income))
 ```
 
@@ -138,67 +140,60 @@ We will begin by cleaning the @tbl-raw-adult-dataset. First, we remove missing v
 
 ```{r}
 #| label: tbl-cleaned-adult-dataset
-#| tbl-cap: "Cleaned Adult Income Dataset"
-income_clean <- read_csv("../data/clean/adult_clean.csv")
-n_obs <- nrow(income_clean)
-sample_size <- round(0.1 * nrow(income_clean))
+#| tbl-cap: Cleaned Adult Income Dataset 
+#| echo: false
+income_clean <- read_csv("../data/clean/adult_cleaned.csv")
 knitr::kable(head(income_clean))
 ```
 
 
-After removing missing values from the @tbl-cleaned-adult-dataset, we randomly sample 10% of the data (which contains a total of `{r} n_obs` observations), bringing our sample size to `{r} sample_size` data points. The sample is then split into training and testing sets (80-20 split) for prediction analysis.
+After removing missing values from the @tbl-cleaned-adult-dataset, we randomly sample 10% of the data (which contains a total of 32,561 observations) for efficiency. The sample is then split into training and testing sets (80-20 split) for prediction analysis.
 
 ```{r}
 #| label: tbl-training-adult-dataset
-#| tbl-cap: "Training Set of Adult Dataset"
+#| tbl-cap: Training Set of Adult Dataset
+#| echo: false
 income_training <- read_csv("../data/clean/adult_training.csv")
-n_training <- nrow(income_training)
 knitr::kable(head(income_training))
 ```
 
 
-Above, we can see that the @tbl-cleaned-adult-dataset has been successfully split, with our @tbl-training-adult-dataset containing `{r} n_training` rows, representing about 80% of our sample size: `{r} sample_size`.
+Above, we can see that the @tbl-cleaned-adult-dataset has been successfully split, with our @tbl-training-adult-dataset representing 80% of the data points.
 
 ### Exploratory Data Analysis and Visualization
 
-#### Pairwise Plot:
+#### Dropping Variables:
 
 To focus on the most relevant variables, we will exclude columns that do not directly contribute to addressing our research question. Hence, we have retained demographic predictors such as age, education level, and hours worked per week. These predictors were chosen based on prior literature [@azzollini2023, @smithedgell2024], theoretical considerations, and empirical evidence from exploratory analyses, which indicate that they have a significant influence on income levels.
 
-Using our @tbl-training-adult-dataset with the irrelevant columns dropped, we create pairwise plots to examine relationships between continuous variables (`age`, `hours_per_week`, `education_num`) and the response variable, as well as associations among the input variables.
+```{r}
+#| label: tbl-final-training-adult-dataset
+#| tbl-cap: Final Training Set with Relevant Variables
+#| echo: false
+income_training_final <- read_csv("../data/clean/final-adult-training.csv")
+knitr::kable(income_training_final)
+```
+
+
+Using our @tbl-final-training-adult-dataset, we create pairwise plots to examine relationships between continuous variables (`age`, `hours_per_week`, `education_num`) and the response variable, as well as associations among the input variables.
 
 ![Pairwise Plot of Response and Predictors](../results/eda/pairwise_plot.png){#fig-pairwise-plot}
 
 
-The @fig-pairwise-plot shows that `age` is right-skewed, `hours_per_week` peaks around 40, and `education_num` has a bimodal distribution. Weak correlations (< 0.6) suggest minimal multicollinearity.
+The @fig-pairwise-plot show that `age` is right-skewed, `hours_per_week` peaks around 40, and `education_num` has a bimodal distribution. Weak correlations (< 0.6) suggest minimal multicollinearity.
 
 The following code generates summary tables for continuous variables, with the code computing key summary statistics: mean, standard deviation, median, variance, maximum, and minimum. 
 
 ```{r}
 #| label: tbl-summary-statistics
-#| tbl-cap: "Summary Statistics Table of Relevant Predictors"
+#| tbl-cap: Summary Statistics Table of Relevant Predictors
+#| echo: false
 summary_statistics_table <- read_csv("../results/eda/summary_statistics.csv")
-# Age stats
-age_stats <- summary_statistics_table %>% filter(name == "age")
-age_mean <- age_stats$mean
-age_sd <- age_stats$sd
-age_min <- age_stats$min
-age_max <- age_stats$max
-# Education stats
-edu_stats <- summary_statistics_table %>% filter(name == "education_num")
-edu_mean <- edu_stats$mean
-edu_sd <- edu_stats$sd
-# Hours stats
-hours_stats <- summary_statistics_table %>% filter(name == "hours_per_week")
-hours_mean <- hours_stats$mean
-hours_sd <- hours_stats$sd
-hours_max <- hours_stats$max
-
 knitr::kable(summary_statistics_table)
 ```
 
 
-The @tbl-summary-statistics show that the average age is `{r} round(age_mean, 0)` years (SD = `{r} round(age_sd, 2)`) with a range of `{r} age_min` to `{r} age_max`. The average education level (education_num) is `{r} round(edu_mean, 0)` years (SD = `{r} round(edu_sd, 2)`), reflecting high school or some college education. For hours_per_week, the average is `{r} round(hours_mean, 2)` hours (SD = `{r} round(hours_sd, 2)`), with a maximum of `{r} hours_max` hours, indicating some individuals work significantly long hours.
+The @tbl-summary-statistics show that the average `age` is 38 years (SD = 13.39) with a range of 17 to 90. The average education level (`education_num`) is 10 years (SD = 2.55), reflecting high school or some college education. For `hours_per_week`, the average is 40.85 hours (SD = 11.96), with a maximum of 99 hours, indicating some individuals work significantly long hours.
 
 ### Proposed Method: Logistic Regression for Prediction and ROC Curve for Model Evaluation
 
@@ -215,18 +210,12 @@ Logistic regression is suitable for modeling binary outcomes like income categor
 1. Potential underfitting if too little predictors are included.
 
 ### Fit the Logistic Regression Model
-In the following code, we fit the logistic regression model to the @tbl-training-adult-dataset using the relevant predictors. 
+In the following code, we fit the logistic regression model to the training sample using the relevant predictors. 
 
 ```{r}
 #| label: tbl-logreg-summary
-#| tbl-cap: "Summary of the Logistic Regression Model"
-income_training <- read_csv("../data/clean/adult_training.csv")
-log_reg_model <- readRDS("../results/model/log_reg_model.RDS")
-
-actual_classes <- income_training$income
-predicted_probs <- predict(log_reg_model, type = "response")
-roc_curve <- roc(actual_classes, predicted_probs)
-auc_value <- auc(roc_curve)
+#| tbl-cap: Summary of the Logistic Regression Model
+#| echo: false
 tidy_logreg <- broom::tidy(log_reg_model)
 knitr::kable(tidy_logreg)
 ```
@@ -238,33 +227,88 @@ To evaluate the model, we will use the ROC curve to visualize the trade-off betw
 
 ![ROC Curve of the Logistic Regression Model](../results/model/roc_plot.png){#fig-roc-curve}
 
-The @fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model `{r} auc_value` is significantly above 0.5, indicating that the model performs much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
+The @fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model `{r} auc_value` is significantly above 0.5, indicating that the model perform much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
 
 ### Test the Model on the Testing Dataset
-Now, we perform the classification analysis and apply the model to the testing dataset and visualize the results of the analysis in a confusion matrix.
+Now, we perform the classification analysis and apply the model to the testing dataset (test_data). 
 
-![Confusion Matrix of Full Model on Testing Set](../results/final/conf_matrix_plot.png){#fig-confusion-plot}
+```{r}
+#| vscode: {languageId: r}
+test_pred_probs <- predict(full_model, newdata = test_data[, c("age", "hours_per_week", "education_num")], type = "response")
+test_pred_class <- ifelse(test_pred_probs > 0.5, ">50K", "<=50K")
+```
+
+We then visualize the results of the analysis in a confusion matrix.
+
+```{r}
+#| vscode: {languageId: r}
+confusion_matrix <- table(Predicted = test_pred_class, Actual = test_data$income)
+
+conf_mat_df <- as.data.frame(confusion_matrix)
+colnames(conf_mat_df) <- c("Actual", "Predicted", "Freq")
+
+ggplot(conf_mat_df, aes(x = Predicted, y = Actual, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "white", size = 6) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Confusion Matrix",
+    x = "Predicted Class",
+    y = "Actual Class"
+  )
+```
+
+#### Figure 3.3: Confusion Matrix of Full Model on Testing Set
 
 ### Classification Results and Model Metrics
 
+- **True Positives (TP):** 40 predicted >50K correctly.
+- **True Negatives (TN):** 428 predicted <=50K correctly.
+- **False Positives (FP):** 110 predicted >50K incorrectly.
+- **False Negatives (FN):** 26 predicted <=50K incorrectly.
+
 ```{r}
-#| label: 
-#| tbl-cap: "Classification Results and Model Metrics"
-metrics_df <- read.csv("metrics.csv")
-sensitivity <- metrics_df$Value[metrics_df$Metric == "Sensitivity"] * 100
-specificity <- metrics_df$Value[metrics_df$Metric == "Specificity"] * 100
-precision <- metrics_df$Value[metrics_df$Metric == "Precision"] * 100
-accuracy <- metrics_df$Value[metrics_df$Metric == "Accuracy"] * 100
-kappa <- metrics_df$Value[metrics_df$Metric == "Cohen's Kappa"] * 100
-knitr::kable(metrics_df)knitr::kable(metrics_df)
+#| vscode: {languageId: r}
+# Confusion matrix values
+TP <- 40  # True Positives
+TN <- 428  # True Negatives
+FP <- 110  # False Positives
+FN <- 26  # False Negatives
+n <- TP + TN + FP + FN  # Total observations
+
+# Sensitivity (SN)
+sensitivity <- TP / (TP + FN)
+
+# Specificity (SP)
+specificity <- TN / (TN + FP)
+
+# Precision (PR)
+precision <- TP / (TP + FP)
+
+# Accuracy (ACC)
+accuracy <- (TP + TN) / n
+
+# Cohen's Kappa (κ)
+observed_accuracy <- (TP + TN) / n
+expected_accuracy <- ((TP + FP) / n) * ((TP + FN) / n) + ((TN + FP) / n) * ((TN + FN) / n)
+kappa <- (observed_accuracy - expected_accuracy) / (1 - expected_accuracy)
+
+metrics_df <- data.frame(
+  Metric = c("Sensitivity", "Specificity", "Precision", "Accuracy", "Cohen's Kappa"),
+  Value  = c(sensitivity, specificity, precision, accuracy, kappa)
+)
+
+metrics_df
 ```
 
+#### Table 3.7: Summary of Model Evaluation Metrics
 
-1. **Sensitivity (SN): `{r} sensitivity`%** - The model correctly identifies `{r} sensitivity`% of higher-income individuals.
-2. **Specificity (SP): `{r} specificity`%** - `{r} specificity`% of lower-income individuals are correctly classified.
-3. **Precision (PR): `{r} precision`%** - `{r} precision`% of predicted >50K individuals actually earn >50K, indicating many false positives.
-4. **Accuracy (ACC): `{r} accuracy`%** - `{r} accuracy`% of overall predictions are correct.
-5. **Cohen's Kappa (κ): `{r} kappa`%** - Moderate agreement, better than random chance but room for improvement.
+1. **Sensitivity (SN): 0.61** - The model correctly identifies 61% of higher-income individuals.
+2. **Specificity (SP): 0.80** - 80% of lower-income individuals are correctly classified.
+3. **Precision (PR): 0.27** - 27% of predicted >50K individuals actually earn >50K, indicating many false positives.
+4. **Accuracy (ACC): 0.77** - 77% of overall predictions are correct.
+5. **Cohen's Kappa (κ): 0.26** - Moderate agreement, better than random chance but room for improvement.
 
 ### Interpretation
 - Strong specificity, but moderate sensitivity and low precision suggest improvements in identifying high-income individuals.
@@ -272,20 +316,20 @@ knitr::kable(metrics_df)knitr::kable(metrics_df)
 - Moderate Cohen's Kappa indicates the need for refinement to improve consistency.
 
 ## (4) Discussion
-### Summary of Findings and Implications
+#### Summary of Findings and Implications
 
-- The logistic regression model showed strong predictive power (AUC =`{r} auc_value`), demonstrating that the model can effectively distinguish income levels better than a baseline.
+- The logistic regression model showed strong predictive power (AUC = 0.7965), demonstrating that the model can effectively distinguish income levels better than a baseline.
 - These findings can inform policies aimed at reducing income inequality. Education and hours worked were key predictors, emphasizing the need for skill development and work-life balance.
 - Understanding the factors behind income disparities can help individuals make more informed career decisions and pursue opportunities for skill enhancement.
 
-### Expectations and Results
+#### Expectations and Results
 
-- The model’s AUC (`{r} auc_value`) is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
+- The model’s AUC (0.7965) is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
   - **Age** correlates with experience, leading to higher salaries.
   - **Education** increases income, with those holding a degree earning significantly more.
   - **Hours Worked** reflects labor input, where more hours can translate to higher pay.
 
-### Future Research
+#### Future Research
 
 - **Geographic Influence on Income:** Including geographic variables may reveal regional disparities in income linked to education and job opportunities.
 - **Intersectionality of Demographics:** Exploring how race, gender, and marital status interact could improve the model's accuracy in predicting income.
