@@ -149,6 +149,15 @@ If you want to build the Docker image locally:
 8. Under the 'Website' heading, click 'Use your GitHub Pages website'.
 9. Now access our analysis through this website!
 
+The ```bash make all ``` command does the following:
+	1.	Downloads the dataset
+	2.	Cleans and preprocesses the data
+	3.	Splits the dataset into training and testing sets
+	4.	Performs exploratory data analysis (EDA)
+	5.	Trains a logistic regression model
+	6.	Evaluates the model and generates final results
+	7.	Renders the final report in docs/index.html
+
 # Licenses
 
 This project is dual-licensed:
