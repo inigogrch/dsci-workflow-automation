@@ -13,6 +13,8 @@ RUN apt-get update && \
 
 # Install all R packages in a single RUN instruction to reduce layers
 RUN Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org'); \
+    remotes::install_version('docopt', version = '0.7.1', repos = 'https://cloud.r-project.org'); \
+    remotes::install_version('GGally', version = '2.1.2', repos = 'https://cloud.r-project.org'); \
     remotes::install_version('broom', version = '1.0.5', repos = 'https://cloud.r-project.org'); \
     remotes::install_version('repr', version = '1.1.6', repos = 'https://cloud.r-project.org'); \
     remotes::install_version('infer', version = '1.0.4', repos = 'https://cloud.r-project.org'); \
