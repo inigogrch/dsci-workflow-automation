@@ -9,7 +9,6 @@ Options:
 "
 
 library(docopt)
-library(dplyr)
 library(readr)
 
 doc <- docopt("
