@@ -11,7 +11,6 @@ Options:
 "
 
 library(docopt)
-library(readr)
 
 doc <- docopt("
 Usage:
