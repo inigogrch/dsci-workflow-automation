@@ -48,6 +48,9 @@ index.html: report/report.qmd results/eda/pairwise_plot.png results/model/roc_pl
 	quarto render report/report.qmd --to html
 	mv report/report.html docs/index.html
 
+test:
+	Rscript -e "testthat::test_dir('tests/testthat')"
+
 clean:
 	rm -rf docs
 	rm -rf results/eda
