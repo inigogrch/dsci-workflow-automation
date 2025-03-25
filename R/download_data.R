@@ -7,7 +7,6 @@
 #' @return No return value, called for side effects (saves file locally)
 #' @examples
 #' download_data("https://example.com/data.csv", "data/adult.csv")
-
 download_data <- function(url, output) {
   download.file(url, output, mode = "wb")
   message("Dataset downloaded successfully.")
