@@ -17,7 +17,7 @@ library(docopt)
 library(readr)
 library(ggplot2)
 
-source("R/calculate_model_metrics.R")
+source("R/compute_model_metrics.R")
 
 doc <- docopt("
 Usage:
