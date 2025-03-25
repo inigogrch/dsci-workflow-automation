@@ -1,7 +1,10 @@
 # test_download_data.R
 # source("R/download_data.R")
-source("../../R/download_data.R")
 library(testthat)
+library(here)
+# source("../../R/download_data.R")
+source(here::here("R", "download_data.R"))
+
 
 test_that("download_data works correctly", {
   test_url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data"

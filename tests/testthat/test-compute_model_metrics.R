@@ -1,6 +1,9 @@
 # source("R/compute_model_metrics.R")
-source("../../R/compute_model_metrics.R")
+# source("../../R/compute_model_metrics.R")
+library(here)
 library(testthat)
+
+source(here::here("R", "compute_model_metrics.R"))
 
 test_that("compute_model_metrics returns correct output for known confusion matrix", {
     cm <- matrix(c(50, 10, 5, 35), nrow = 2, byrow = TRUE)
