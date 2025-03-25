@@ -1,5 +1,6 @@
 # test_download_data.R
-source("R/download_data.R")
+# source("R/download_data.R")
+source("../../R/download_data.R")
 library(testthat)
 
 test_that("download_data works correctly", {

@@ -1,4 +1,5 @@
-source("R/compute_model_metrics.R")
+# source("R/compute_model_metrics.R")
+source("../../R/compute_model_metrics.R")
 library(testthat)
 
 test_that("compute_model_metrics returns correct output for known confusion matrix", {
