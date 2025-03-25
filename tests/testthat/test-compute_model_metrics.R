@@ -1,5 +1,3 @@
-# source("R/compute_model_metrics.R")
-# source("../../R/compute_model_metrics.R")
 library(here)
 library(testthat)
 

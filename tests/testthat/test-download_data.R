@@ -1,8 +1,6 @@
 # test_download_data.R
-# source("R/download_data.R")
 library(testthat)
 library(here)
-# source("../../R/download_data.R")
 source(here::here("R", "download_data.R"))
 
 

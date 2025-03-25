@@ -12,7 +12,6 @@ Options:
 
 library(docopt)
 
-# Source the function
 source("R/download_data.R")
 
 doc <- docopt("
