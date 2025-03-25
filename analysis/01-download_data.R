@@ -12,13 +12,12 @@ Options:
 
 library(docopt)
 
+# Source the function
+source("R/download_data.R")
+
 doc <- docopt("
 Usage:
   01-download_data.R --url=<url> --output=<output>
 ")
 
-url <- doc$url
-output <- doc$output
-
-download.file(url, output)
-message("Dataset downloaded successfully.")
+download_data(doc$url, doc$output)
