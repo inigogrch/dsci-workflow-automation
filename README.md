@@ -91,7 +91,6 @@ To ensure you're using the latest Docker image with all required packages:
 Whenever you switch branches or before starting work on the project, run the following commands to get the latest Docker image:
 
 ```bash
-# Pull the latest image from Docker Hub
 docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
 ```
 
