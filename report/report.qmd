@@ -142,7 +142,7 @@ Above, we can see that @tbl-cleaned-adult-dataset has been successfully split, w
 
 #### Pairwise Plot:
 
-To focus on the most relevant variables, we will exclude columns that do not directly contribute to addressing our research question. Hence, we have retained demographic predictors such as age, education level, and hours worked per week. These predictors were chosen based on prior literature [@azzollini2023, @smithedgell2024], theoretical considerations, and empirical evidence from exploratory analyses, which indicate that they have a significant influence on income levels.
+To focus on the most relevant variables, we will exclude columns that do not directly contribute to addressing our research question. Hence, we have retained demographic predictors such as age, education level, and hours worked per week. These predictors were chosen based on prior literature [@azzollini2023; @smithedgell2024], theoretical considerations, and empirical evidence from exploratory analyses, which indicate that they have a significant influence on income levels.
 
 Using @tbl-training-adult-dataset with the irrelevant columns dropped, we create pairwise plots to examine relationships between continuous variables (`age`, `hours_per_week`, `education_num`) and the response variable, as well as associations among the input variables.
 

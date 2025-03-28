@@ -95,11 +95,27 @@ The easiest way to use our Docker container is with Docker Compose:
     -   [Docker Installation Guide](https://docs.docker.com/get-docker/)
     -   [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
 
-2.  **Run the container** by navigating to the project directory and executing:
+2. **Keeping Your Docker Environment Updated**
 
-    ``` bash
-    docker-compose up
-    ```
+To ensure you're using the latest Docker image with all required packages:
+
+**Before Starting Work**
+
+Whenever you switch branches or before starting work on the project, run the following commands to get the latest Docker image:
+
+```bash
+docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
+```
+
+**Stop any existing containers**
+```bash
+docker-compose down
+```
+
+**Start a fresh container with the latest image**
+```bash
+docker-compose up
+```
 
 3.  **Access RStudio** by opening a web browser and going to:
 
@@ -154,8 +170,8 @@ If you want to build the Docker image locally:
 
 # Running the Makefile (Our Analysis)
 
-1.  In docker's terminal application, type `cd/project`, then type `make all`.
-2.  Then go to **/project/report/report.qmd** and click the **Render** button to render it.
+1.  In docker's terminal application, type `cd project`, then type `make all`.
+2.  Then go to **/project/report/report.qmd** and click the **Render** button to render it. 
 3.  If you encounter issues, reset the data and start over by running: `make clean`.
 
 The `make all` command does the following:
