@@ -18,7 +18,7 @@ train_test_split <- function(data, train_fraction = 0.8) {
   set.seed(1234)
   train_indices <- sample(
     seq_len(nrow(data)),
-    size = train_fraction * nrow(data)
+    size = floor(train_fraction * nrow(data))
   )
   
   train_data <- data[train_indices, ]
