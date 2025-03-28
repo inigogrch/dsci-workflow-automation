@@ -53,7 +53,7 @@ conf_matrix_plot <- ggplot(
   )
 ggsave(doc$output_plot, plot = conf_matrix_plot)
 
-metrics_df <- calculate_model_metrics(confusion_matrix)
+metrics_df <- compute_model_metrics(confusion_matrix)
 write_csv(metrics_df, doc$output_table)
 
 message("Confusion matrix and final results table created successfully.")
