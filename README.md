@@ -82,11 +82,28 @@ The easiest way to use our Docker container is with Docker Compose:
     -   [Docker Installation Guide](https://docs.docker.com/get-docker/)
     -   [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
 
-2.  **Run the container** by navigating to the project directory and executing:
+2. **Keeping Your Docker Environment Updated**
 
-    ``` bash
-    docker-compose up
-    ```
+To ensure you're using the latest Docker image with all required packages:
+
+**Before Starting Work**
+
+Whenever you switch branches or before starting work on the project, run the following commands to get the latest Docker image:
+
+```bash
+# Pull the latest image from Docker Hub
+docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
+```
+
+**Stop any existing containers**
+```bash
+docker-compose down
+```
+
+**Start a fresh container with the latest image**
+```bash
+docker-compose up -d
+```
 
 3.  **Access RStudio** by opening a web browser and going to:
 
