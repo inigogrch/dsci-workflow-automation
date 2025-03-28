@@ -2,11 +2,11 @@ version: '1'
 
 services:
   rstudio:
-    image: dsci-310-group-8-docker:latest
+    image: zx2yizzy/dsci-310-group-8-project-docker:latest
     ports:
       - "8787:8787"
     environment:
       - PASSWORD=group8  
       - USER=rstudio
     volumes:
-      - .:/home/rstudio/project
+      - .:/home/rstudio/project  # Mount current directory to /home/rstudio/project in container
