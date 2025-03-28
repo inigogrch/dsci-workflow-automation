@@ -102,7 +102,7 @@ docker-compose down
 
 **Start a fresh container with the latest image**
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 3.  **Access RStudio** by opening a web browser and going to:
