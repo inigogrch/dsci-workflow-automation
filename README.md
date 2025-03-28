@@ -15,13 +15,26 @@
 
 This project aims to investigate income prediction using the UCI Adult Dataset, which compiles demographic and income data from the 1994 U.S. Census. The primary objective is to predict whether an individual earns over \$50,000 annually using factors such as age, education level, and hours worked per week. By employing a logistic regression model, we aim to effectively predict income levels on test cases while assessing model performance using metrics like the ROC curve (AUC ≈ 0.79), sensitivity, specificity, and accuracy.
 
-Some tools and concepts we will include: - R programming language for data loading, wrangling, cleaning, and analysis. - Docker to containerize our environments. - A variety of R packages, including tidyverse, broom, and repr.
+Some tools and concepts we will include: 
+- R programming language for data loading, wrangling, cleaning, and analysis. 
+- Docker to containerize our environments. 
+- A variety of R packages, including tidyverse, broom, and repr.
 
-Summary of Findings and Implications: - Our logistic regression model demonstrated strong predictive power (AUC = 0.7965), highlighting that key factors like education level, age, and hours worked significantly influence income levels. - Higher education and increased work hours are strongly linked to higher income, reinforcing the importance of skill development and labor market participation. - These findings suggest that policy efforts aimed at reducing income inequality should focus on education accessibility and work-life balance initiatives.
+Summary of Findings and Implications:
+ - Our logistic regression model demonstrated strong predictive power (AUC = 0.7965), highlighting that key factors like education level, age, and hours worked significantly influence income levels. 
+ - Higher education and increased work hours are strongly linked to higher income, reinforcing the importance of skill development and labor market participation. 
+ - These findings suggest that policy efforts aimed at reducing income inequality should focus on education accessibility and work-life balance initiatives.
 
-Expectations and Results: - The results align with expectations: - Age & Experience: Older individuals generally earn more due to accumulated experience. - Education: Those with higher degrees earn significantly more. - Work Hours: More hours worked often lead to higher pay.
+Expectations and Results: 
+The results align with expectations: 
+- Age & Experience: Older individuals generally earn more due to accumulated experience. 
+- Education: Those with higher degrees earn significantly more. 
+- Work Hours: More hours worked often lead to higher pay.
 
-Future Research: - Geographic Factors: Examining regional disparities in income may provide insights into location-based economic opportunities. - Demographic Intersections: Investigating how race, gender, and marital status interact with income could enhance model accuracy. - Health & Disability: Including health variables could highlight additional barriers affecting earnings potential.
+Future Research: 
+- Geographic Factors: Examining regional disparities in income may provide insights into location-based economic opportunities. 
+- Demographic Intersections: Investigating how race, gender, and marital status interact with income could enhance model accuracy. 
+- Health & Disability: Including health variables could highlight additional barriers affecting earnings potential.
 
 # How to Run the Analysis
 
