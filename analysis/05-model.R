@@ -13,9 +13,10 @@ library(docopt)
 library(readr)
 library(ggplot2)
 library(pROC)
+library(incomepredictability)
 
 # Source the logistic model function
-source("R/train_logistic_model.R")
+# source("R/train_logistic_model.R")
 
 doc <- docopt("
 Usage:
@@ -41,7 +42,7 @@ model_results <- train_logistic_model(
 saveRDS(model_results$model, doc$output_model)
 
 # Create and save ROC plot
-roc_plot <- ggroc(model_results$roc_curve, legacy.axes = TRUE) + 
+roc_plot <- ggroc(model_results$roc_curve, legacy.axes = TRUE) +
   xlim(0, 1) +
   ylim(0, 1) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "gray") +

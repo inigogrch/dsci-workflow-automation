@@ -1,7 +1,7 @@
 "
 Script to perform exploratory data analysis (EDA).
 Usage:
-  analysis/04-eda.R --input=<input> --output_plot=<output> --output_table=<output> 
+  analysis/04-eda.R --input=<input> --output_plot=<output> --output_table=<output>
 
 Options:
   --input=<input>   Path to cleaned training dataset.
@@ -15,15 +15,18 @@ library(readr)
 library(GGally)
 library(tidyverse)
 library(repr)
+library(incomepredictability)
 
 doc <- docopt("
 Usage:
   analysis/04-eda.R --input=<input> --output_plot=<output> --output_table=<output>
 ")
 train_data <- read_csv(doc$input) %>%
-  select(-fnlwgt, -education, -relationship, -workclass, -capital_gain,
-         -capital_loss, -marital_status, -occupation, -race, -sex,
-         -native_country)
+  select(
+    -fnlwgt, -education, -relationship, -workclass, -capital_gain,
+    -capital_loss, -marital_status, -occupation, -race, -sex,
+    -native_country
+  )
 
 # Plot abstraction
 options(repr.plot.width = 10, repr.plot.height = 8)
