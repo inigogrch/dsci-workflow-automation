@@ -27,7 +27,7 @@ docs/.nojekyll: | docs
 	touch docs/.nojekyll
 
 analysis/data/raw/adult_raw.csv: analysis/01-download_data.R | analysis/data/raw
-	Rscript analysis/01-download_data.R --url="https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data" --output=analysis/data/raw/adult_raw.csv
+	Rscript analysis/01-download_data.R --url="https://raw.githubusercontent.com/miketham24/adult_dataset/refs/heads/main/adult.csv" --output=analysis/data/raw/adult_raw.csv
 
 analysis/data/clean/adult_clean.csv: analysis/02-clean_data.R analysis/data/raw/adult_raw.csv | analysis/data/clean
 	Rscript analysis/02-clean_data.R --input=analysis/data/raw/adult_raw.csv --output=analysis/data/clean/adult_clean.csv
