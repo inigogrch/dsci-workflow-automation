@@ -2,7 +2,7 @@
 Script to create our training set from the raw data
 Usage:
   analysis/03-training_split.R --input=<input> --output_train=<output> --output_test=<output>
- 
+
 
 Options:
   --input=<input>   Path to cleaned dataset.
@@ -14,10 +14,11 @@ library(docopt)
 library(dplyr)
 library(readr)
 
-source("R/train_test_split.R")
+# source("R/train_test_split.R")
+library(incomepredictability)
 
 doc <- docopt("
-Usage: 
+Usage:
   analysis/03-training_split.R --input=<input> --output_train=<output> --output_test=<output>
 ")
 
@@ -31,7 +32,7 @@ income_sample <- cleaned_data %>%
 splits <- train_test_split(income_sample, 0.8)
 
 train_data <- splits$train
-test_data  <- splits$test
+test_data <- splits$test
 
 write.csv(train_data, doc$output_train, row.names = FALSE)
 write.csv(test_data, doc$output_test, row.names = FALSE)

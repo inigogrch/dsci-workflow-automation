@@ -10,6 +10,7 @@ Options:
 
 library(docopt)
 library(readr)
+library(incomepredictability)
 
 doc <- docopt("
 Usage:
@@ -18,9 +19,11 @@ Usage:
 
 data <- read_csv(doc$input, col_names = FALSE)
 data <- na.omit(data)
-colnames(data) <- c("age", "workclass", "fnlwgt", "education", "education_num",
-"marital_status", "occupation", "relationship", "race", "sex", "capital_gain",  # nolint
-"capital_loss", "hours_per_week", "native_country", "income")
+colnames(data) <- c(
+  "age", "workclass", "fnlwgt", "education", "education_num",
+  "marital_status", "occupation", "relationship", "race", "sex", "capital_gain", # nolint
+  "capital_loss", "hours_per_week", "native_country", "income"
+)
 data$income <- as.factor(data$income)
 
 write.csv(data, doc$output, row.names = FALSE)
