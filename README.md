@@ -73,6 +73,8 @@ The following dependencies are required to run the analysis:
 
 This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis.
 
+Before using the Docker, please ensure the Docker Desktop application runs in the background.
+
 ## Using Docker with Docker Compose (Recommended)
 
 The easiest way to use our Docker container is with Docker Compose:
