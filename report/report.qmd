@@ -121,9 +121,9 @@ n_obs <- nrow(income_clean)
 sample_size <- round(0.1 * nrow(income_clean))
 knitr::kable(head(income_clean))
 ```
-**Number of Rows: `{r} n_obs`**
+**Number of Rows: `` `r n_obs` ``**
 
-After removing missing values from @tbl-cleaned-adult-dataset, we randomly sample 10% of the data (which contains a total of `{r} n_obs` observations), bringing our sample size to `{r} sample_size` data points. The sample is then split into training and testing sets (80-20 split) for prediction analysis.
+After removing missing values from @tbl-cleaned-adult-dataset, we randomly sample 10% of the data (which contains a total of `` `r n_obs` `` observations), bringing our sample size to `` `r sample_size` `` data points. The sample is then split into training and testing sets (80-20 split) for prediction analysis.
 
 ```{r}
 #| label: tbl-training-adult-dataset
@@ -134,15 +134,15 @@ income_training <- read_csv("../data/clean/adult_training.csv")
 n_training <- nrow(income_training)
 knitr::kable(head(income_training))
 ```
-**Number of Rows: `{r} n_training`**
+**Number of Rows: `` `r n_training` ``**
 
-Above, we can see that @tbl-cleaned-adult-dataset has been successfully split, with @tbl-training-adult-dataset containing `{r} n_training` rows, representing about 80% of our sample size: `{r} sample_size`.
+Above, we can see that @tbl-cleaned-adult-dataset has been successfully split, with @tbl-training-adult-dataset containing `` `r n_training` `` rows, representing about 80% of our sample size: `` `r sample_size` ``.
 
 ### Exploratory Data Analysis (EDA)
 
 #### Pairwise Plot:
 
-To focus on the most relevant variables, we will exclude columns that do not directly contribute to addressing our research question. Hence, we have retained demographic predictors such as age, education level, and hours worked per week. These predictors were chosen based on prior literature [@azzollini2023, @smithedgell2024], theoretical considerations, and empirical evidence from exploratory analyses, which indicate that they have a significant influence on income levels.
+To focus on the most relevant variables, we will exclude columns that do not directly contribute to addressing our research question. Hence, we have retained demographic predictors such as age, education level, and hours worked per week. These predictors were chosen based on prior literature [@azzollini2023; @smithedgell2024], theoretical considerations, and empirical evidence from exploratory analyses, which indicate that they have a significant influence on income levels.
 
 Using @tbl-training-adult-dataset with the irrelevant columns dropped, we create pairwise plots to examine relationships between continuous variables (`age`, `hours_per_week`, `education_num`) and the response variable, as well as associations among the input variables.
 
@@ -181,7 +181,7 @@ knitr::kable(summary_statistics_table)
 ```
 
 
-@tbl-summary-statistics shows that the average age is `{r} round(age_mean, 0)` years (SD = `{r} round(age_sd, 2)`) with a range of `{r} age_min` to `{r} age_max`. The average education level (education_num) is `{r} round(edu_mean, 0)` years (SD = `{r} round(edu_sd, 2)`), reflecting high school or some college education. For hours_per_week, the average is `{r} round(hours_mean, 2)` hours (SD = `{r} round(hours_sd, 2)`), with a maximum of `{r} hours_max` hours, indicating some individuals work significantly long hours.
+@tbl-summary-statistics shows that the average age is `` `r round(age_mean, 0)` `` years (SD = `` `r round(age_sd, 2)` ``) with a range of `` `r age_min` `` to `` `r age_max` ``. The average education level (education_num) is `` `r round(edu_mean, 0)` `` years (SD = `` `r round(edu_sd, 2)` ``), reflecting high school or some college education. For hours_per_week, the average is `` `r round(hours_mean, 2)` `` hours (SD = `` `r round(hours_sd, 2)` ``), with a maximum of `` `r hours_max` `` hours, indicating some individuals work significantly long hours.
 
 ### Proposed Method: Logistic Regression and ROC Curve
 
@@ -218,7 +218,7 @@ edu_coef <- tidy_logreg[tidy_logreg$term == "education_num", "estimate"]
 knitr::kable(tidy_logreg)
 ```
 
-We can observe from @tbl-logreg-summary that all predictors were deemed significant (based on the p-values). Furthermore, education number seemed to have the highest coefficient (`{r} edu_coef`), demonstrating the greatest impact on model predictions.
+We can observe from @tbl-logreg-summary that all predictors were deemed significant (based on the p-values). Furthermore, education number seemed to have the highest coefficient (`` `r edu_coef` ``), demonstrating the greatest impact on model predictions.
 
 ### Visualizing the ROC Curve
 To evaluate the model, we will use the ROC curve to visualize the trade-off between sensitivity and specificity across classification thresholds. The AUC (Area Under the Curve) will be calculated to quantify model performance, with values closer to 1 indicating strong discrimination and values near 0.5 suggesting random guessing.
@@ -228,7 +228,7 @@ To evaluate the model, we will use the ROC curve to visualize the trade-off betw
 :::
 
 
-@fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model (`{r} round(auc_value, 4)`) is significantly above 0.5, indicating that the model performs much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
+@fig-roc-curve shows us that the AUC (Area Under the Curve) values obtained for the model (`` `r round(auc_value, 4)` ``) is significantly above 0.5, indicating that the model performs much better than random guessing. The high AUC value suggests that the model has strong discriminatory power, effectively distinguishing between individuals earning `<=50K` and `>50K` based on the selected predictors. 
 
 ### Test the Model on the Testing Dataset
 Now, we perform the classification analysis and apply the model to the testing dataset and visualize the results of the analysis in a confusion matrix.
@@ -256,15 +256,15 @@ knitr::kable(metrics_df)
 
 From @tbl-classification-results, we observe the following metrics:
 
-1. **Sensitivity (SN): `{r} round(sensitivity,2)`%** - The model correctly identifies `{r} round(sensitivity,2)`% of higher-income individuals.
+1. **Sensitivity (SN): `` `r round(sensitivity,2)` ``%** - The model correctly identifies `` `r round(sensitivity,2)` ``% of higher-income individuals.
 
-2. **Specificity (SP): `{r} round(specificity,2)`%** - `{r} round(specificity,2)`% of lower-income individuals are correctly classified.
+2. **Specificity (SP): `` `r round(specificity,2)` ``%** - `` `r round(specificity,2)` ``% of lower-income individuals are correctly classified.
 
-3. **Precision (PR): `{r} round(precision,2)`%** - `{r} round(precision,2)`% of predicted >50K individuals actually earn >50K, indicating many false positives.
+3. **Precision (PR): `` `r round(precision,2)` ``%** - `` `r round(precision,2)` ``% of predicted >50K individuals actually earn >50K, indicating many false positives.
 
-4. **Accuracy (ACC): `{r} round(accuracy,2)`%** - `{r} round(accuracy,2)`% of overall predictions are correct.
+4. **Accuracy (ACC): `` `r round(accuracy,2)` ``%** - `` `r round(accuracy,2)` ``% of overall predictions are correct.
 
-5. **Cohen's Kappa (κ): `{r} round(kappa,2)`%** - Moderate agreement, better than random chance but room for improvement.
+5. **Cohen's Kappa (κ): `` `r round(kappa,2)` ``%** - Moderate agreement, better than random chance but room for improvement.
 
 ### Interpretation
 - Strong specificity, but low sensitivity and moderate precision suggest improvements in identifying high-income individuals.
@@ -274,13 +274,13 @@ From @tbl-classification-results, we observe the following metrics:
 ## Discussion
 ### Summary of Findings and Implications
 
-- The logistic regression model showed strong predictive power **(AUC =`{r} auc_value`)**, demonstrating that the model can effectively distinguish income levels better than a baseline.
+- The logistic regression model showed strong predictive power **(AUC =`` `r auc_value` ``)**, demonstrating that the model can effectively distinguish income levels better than a baseline.
 - These findings can inform policies aimed at reducing income inequality. Education and hours worked were key predictors, emphasizing the need for skill development and work-life balance.
 - Understanding the factors behind income disparities can help individuals make more informed career decisions and pursue opportunities for skill enhancement.
 
 ### Expectations and Results
 
-- The model’s **AUC (`{r} auc_value`)** is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
+- The model’s **AUC (`` `r auc_value` ``)** is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
   - **Age** correlates with experience, leading to higher salaries.
   - **Education** increases income, with those holding a degree earning significantly more.
   - **Hours Worked** reflects labor input, where more hours can translate to higher pay.
