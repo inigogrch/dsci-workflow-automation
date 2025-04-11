@@ -1,7 +1,7 @@
 services:
   rstudio:
     image: zx2yizzy/dsci-310-group-8-project-docker:latest
-    platform: linux/arm64  # Changed for M3 compatibility
+    platform: linux/amd64  # For Apple Silicon compatibility
     ports:
       - "8787:8787"
     environment:
