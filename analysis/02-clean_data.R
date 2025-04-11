@@ -24,12 +24,13 @@ Usage:
 ", args = c("--input", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/raw/adult_raw.csv", "--output", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/clean/adult_clean.csv")) #nolint
 
 raw_data <- read_csv(doc$input, col_names = FALSE)
+
+# Validation
 # Checklist #1: Correct Data File Format
 if (!inherits(raw_data, "data.frame")) {
   stop("The input raw_data is not a data frame or tibble as expected!")
 }
-
-# Create a pointblank agent for the raw data with action levels that automatically stop on failure. #nolint
+# Pointblank agent for the raw data with action levels that automatically warn and stop (on a threshold) upon failure. #nolint
 raw_agent <- create_agent(
   tbl = raw_data,
   tbl_name = "Raw Data",
@@ -47,7 +48,6 @@ missing_thresholds <- raw_data %>%
 if (!all(missing_thresholds >= 0.95)) {
   stop("One or more columns do not meet the 95% non-missing threshold.")
 }
-
 # Checklist #5: Correct column data types (expected types based on spec)
 raw_agent <- raw_agent %>%
   col_is_numeric(columns = vars(X1, X3, X5, X11, X12, X13)) %>%
@@ -64,13 +64,13 @@ raw_agent <- raw_agent %>%
   col_vals_between(columns = vars(X12), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
   col_vals_between(columns = vars(X13), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
 
-  # Checklist #8a: Correct category levels (i.e., no string mismatches; within the allowed set)
+  # Checklist #8a: Correct category levels (i.e., no string mismatches and within the allowed set)
   # Check for workclass values (X2)
   col_vals_in_set(
     columns = vars(X2),
     set = c(
       "State-gov", "Self-emp-not-inc", "Private", "Federal-gov",
-      "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked" # has a ?, will re-validate after cleaning
+      "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked" # after investigation ? was deemed a plausible value for the data
     ),
     label = "Workclass values check"
   ) %>%
@@ -92,18 +92,76 @@ raw_agent <- raw_agent %>%
       "Separated", "Married-AF-spouse", "Widowed"
     ),
     label = "Marital status values check"
+  ) %>%
+  col_vals_in_set(
+    columns = vars(X7),
+    set = c(
+      "Adm-clerical", "Exec-managerial", "Handlers-cleaners",
+      "Prof-specialty", "Other-service", "Sales",
+      "Craft-repair", "Transport-moving", "Farming-fishing",
+      "Machine-op-inspct", "Tech-support", "?", # after investigation ? was deemed a plausible value for the data
+      "Protective-serv", "Armed-Forces", "Priv-house-serv"
+    ),
+    label = "Occupation values check"
+  ) %>%
+  # Check for relationship values (X8)
+  col_vals_in_set(
+    columns = vars(X8),
+    set = c(
+      "Not-in-family", "Husband", "Wife", "Own-child",
+      "Unmarried", "Other-relative"
+    ),
+    label = "Relationship values check"
+  ) %>%
+  # Check for race values (X9)
+  col_vals_in_set(
+    columns = vars(X9),
+    set = c(
+      "White", "Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"
+    ),
+    label = "Race values check"
+  ) %>%
+  # Check for sex values (X10)
+  col_vals_in_set(
+    columns = vars(X10),
+    set = c("Male", "Female"),
+    label = "Sex values check"
+  ) %>%
+  # Check for native-country values (X14)
+  col_vals_in_set(
+    columns = vars(X14),
+    set = c(
+      "United-States", "Cuba", "Jamaica", "India", "?", "Mexico", "South", # after investigation ? was deemed a plausible value for the data
+      "Puerto-Rico", "Honduras", "England", "Canada", "Germany", "Iran",
+      "Philippines", "Italy", "Poland", "Columbia", "Cambodia", "Thailand",
+      "Ecuador", "Laos", "Taiwan", "Haiti", "Portugal", "Dominican-Republic",
+      "El-Salvador", "France", "Guatemala", "China", "Japan", "Yugoslavia",
+      "Peru", "Outlying-US(Guam-USVI-etc)", "Scotland", "Trinadad&Tobago",
+      "Greece", "Nicaragua", "Vietnam", "Hong", "Ireland", "Hungary",
+      "Holand-Netherlands"
+    ),
+    label = "Native-country values check"
+  ) %>%
+  # Check for income values (X15)
+  col_vals_in_set(
+    columns = vars(X15),
+    set = c("<=50K", ">50K"),
+    label = "Income values check"
   )
-
-# unique_values <- unique(raw_data$X6)
-# print(unique_values)
-
-duplicates <- raw_data[duplicated(raw_data), ]
-print(duplicates)
-
-# Run the interrogation (this evaluates all the above checks)
+# Checklist #8b: Correct category levels (i.e., no single values)
+unique_counts <- raw_data %>%
+  summarise(
+    workclass_n = n_distinct(X2),
+    education_n = n_distinct(X4),
+    marital_status_n = n_distinct(X6)
+  )
+if (any(unique_counts < 2)) {
+  stop("One or more categorical columns contains only a single unique value.")
+}
+# Run the interrogation (evaluates all the above checks)
 raw_agent <- interrogate(raw_agent)
-raw_agent
 
+# Cleaning
 clean_data <- na.omit(raw_data)
 colnames(clean_data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
