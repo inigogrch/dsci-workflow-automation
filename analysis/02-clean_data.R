@@ -14,18 +14,13 @@ library(incomepredictability)
 library(pointblank)
 library(dplyr)
 
-# doc <- docopt("
-# Usage:
-#   02_clean_data.R --input=<input> --output=<output>
-# ")
-doc <- docopt::docopt("
+doc <- docopt("
 Usage:
   02_clean_data.R --input=<input> --output=<output>
-", args = c("--input", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/raw/adult_raw.csv", "--output", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/clean/adult_clean.csv")) #nolint
-
+")
 raw_data <- read_csv(doc$input, col_names = FALSE)
 
-# Validation
+# Raw Data Validation
 # Checklist #1: Correct Data File Format
 if (!inherits(raw_data, "data.frame")) {
   stop("The input raw_data is not a data frame or tibble as expected!")
@@ -42,7 +37,7 @@ raw_agent <- create_agent(
   rows_complete()
 
 # Checklist #4: Missingness not beyond expected threshold (set to 95%)
-# Can't use col_vals_not_null() yet--might have some missingness in the raw data
+# Can't use col_vals_not_null yet (done in clean data validation)--might have some missingness in the raw data
 missing_thresholds <- raw_data %>%
   summarise(across(everything(), ~ sum(!is.na(.)) / n()))
 if (!all(missing_thresholds >= 0.95)) {
@@ -158,10 +153,9 @@ unique_counts <- raw_data %>%
 if (any(unique_counts < 2)) {
   stop("One or more categorical columns contains only a single unique value.")
 }
-# Run the interrogation (evaluates all the above checks)
+# Run the raw data validation
 raw_agent <- interrogate(raw_agent)
 
-# Cleaning
 clean_data <- na.omit(raw_data)
 colnames(clean_data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
@@ -169,6 +163,40 @@ colnames(clean_data) <- c(
   "capital_loss", "hours_per_week", "native_country", "income"
 )
 clean_data$income <- as.factor(clean_data$income)
+
+# Clean Data Validation
+clean_agent <- create_agent(
+  tbl = clean_data,
+  tbl_name = "Cleaned Data",
+  actions = action_levels(warn_at = 1, stop_at = 1, notify_at = 1)
+) %>%
+  # Validate column renaming
+  col_exists(
+    columns = c(
+      "age", "workclass", "fnlwgt", "education", "education_num",
+      "marital_status", "occupation", "relationship", "race", "sex",
+      "capital_gain", "capital_loss", "hours_per_week", "native_country",
+      "income"
+    )
+  ) %>%
+  # Validate row completeness, should work because of na.omit()
+  rows_complete() %>%
+  # Validate 100% completeness for data (Checklist #4 confirmed)
+  col_vals_not_null(
+    columns = c(
+      "age", "workclass", "fnlwgt", "education", "education_num",
+      "marital_status", "occupation", "relationship", "race", "sex",
+      "capital_gain", "capital_loss", "hours_per_week", "native_country",
+      "income"
+    )
+  ) %>%
+  # Validate correct column types + successful factor data type for target
+  col_is_numeric(columns = vars(age, fnlwgt, education_num, capital_gain, capital_loss, hours_per_week)) %>%
+  col_is_character(columns = vars(workclass, education, marital_status, occupation, relationship, race, sex, native_country)) %>%
+  col_is_factor(columns = vars(income))
+# Run the clean data validation
+clean_agent <- interrogate(clean_agent)
+clean_agent
 
 write.csv(clean_data, doc$output, row.names = FALSE)
 message("Dataset cleaned successfully.")
