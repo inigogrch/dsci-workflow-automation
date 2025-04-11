@@ -49,3 +49,7 @@ po/*~
 rsconnect/
 .ipynb_checkpoints
 .virtual_documents
+
+# .DS_Store
+echo ".DS_Store" >> .gitignore
+echo "**/.DS_Store" >> .gitignore  # This ignores .DS_Store in all directories
