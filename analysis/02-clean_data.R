@@ -11,20 +11,78 @@ Options:
 library(docopt)
 library(readr)
 library(incomepredictability)
+library(pointblank)
+library(dplyr)
 
-doc <- docopt("
+# doc <- docopt("
+# Usage:
+#   02_clean_data.R --input=<input> --output=<output>
+# ")
+doc <- docopt::docopt("
 Usage:
   02_clean_data.R --input=<input> --output=<output>
-")
+", args = c("--input", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/raw/adult_raw.csv", "--output", "/Users/benjogerochi/dsci310/dsci-310-group-8/data/clean/adult_clean.csv")) #nolint
 
-data <- read_csv(doc$input, col_names = FALSE)
-data <- na.omit(data)
-colnames(data) <- c(
+raw_data <- read_csv(doc$input, col_names = FALSE) %>%
+  # Checklist #1: Correct Data File Format
+  if (!inherits(raw_data, "data.frame")) {
+    stop("The input raw_data is not a data frame or tibble as expected!")
+  }
+
+# Create a pointblank agent for the raw data with action levels that automatically stop on failure. #nolint
+raw_agent <- create_agent(
+  tbl = raw_data,
+  tbl_name = "Raw Data",
+  actions = action_levels(warn_at = 1, stop_at = 1, notify_at = 1)
+) %>%
+  # Checklist #2: Correct column names (raw data headers are X1, X2, ..., X15) #nolint
+  col_exists(columns = paste0("X", 1:15)) %>%
+  # Checklist #3: No empty observations (checks for completely NA rows)
+  rows_complete()
+
+# Checklist #4: Missingness not beyond expected threshold (set to 95%)
+# Can't use col_vals_not_null() yet--might have some missingness in the raw data
+missing_thresholds <- raw_data %>%
+  summarise(across(everything(), ~ sum(!is.na(.)) / n()))
+if (!all(missing_thresholds >= 0.95)) {
+  stop("One or more columns do not meet the 95% non-missing threshold.")
+}
+
+# Checklist #5: Correct column data types (expected types based on spec)
+raw_agent <- raw_agent %>%
+  col_is_numeric(columns = vars(X1, X3, X5, X11, X12, X13)) %>%
+  col_is_character(columns = vars(X2, X4, X6, X7, X8, X9, X10, X14, X15)) %>%
+  # Checklist #6: No duplicate observations
+  rows_distinct() %>%
+  # Checklist #7: No outliers or anomalous values
+  col_vals_between(columns = vars(X1), left = 0, right = 100) %>% # age (X1): 0-100
+  col_vals_between(columns = vars(X3), left = 1, right = Inf) %>%   # fnlwgt (X3): positive
+  col_vals_between(columns = vars(X5), left = 1, right = 16) %>% # education_num (X5): 1-16
+  col_vals_between(columns = vars(X11), left = 0, right = Inf) %>% # capital_gain (X11): 0 or positive
+  col_vals_between(columns = vars(X12), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
+  col_vals_between(columns = vars(X13), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
+
+  # 7. Category level check:
+  #    For example, if X10 is intended to be "sex", it should only contain "Male" or "Female".
+  col_vals_in_set(
+    columns = vars(X10),
+    set = c("Male", "Female")
+  )
+
+unique_values <- unique(raw_data$X4)
+print(unique_values)
+
+# Run the interrogation (this evaluates all the above checks)
+raw_agent <- interrogate(raw_agent)
+raw_agent
+
+clean_data <- na.omit(raw_data)
+colnames(clean_data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
   "marital_status", "occupation", "relationship", "race", "sex", "capital_gain", # nolint
   "capital_loss", "hours_per_week", "native_country", "income"
 )
-data$income <- as.factor(data$income)
+clean_data$income <- as.factor(clean_data$income)
 
-write.csv(data, doc$output, row.names = FALSE)
+write.csv(clean_data, doc$output, row.names = FALSE)
 message("Dataset cleaned successfully.")
