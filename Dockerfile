@@ -23,30 +23,38 @@ RUN apt-get update && \
 RUN Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
 
 # Install tidyverse first to ensure its dependencies are properly resolved
-RUN Rscript -e "remotes::install_version('tidyverse', version = '2.0.0', repos = 'https://cloud.r-project.org')"
+RUN Rscript -e "install.packages('tidyverse', repos = 'https://cloud.r-project.org')"
 
-# Install all other R packages with version pinning
+# Install all necessary R packages for the project
 RUN Rscript -e "\
-    remotes::install_version('docopt', version = '0.7.1', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('GGally', version = '2.1.2', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('broom', version = '1.0.5', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('repr', version = '1.1.6', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('infer', version = '1.0.4', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('gridExtra', version = '2.3', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('faraway', version = '1.0.8', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('mitools', version = '2.4', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('glmnet', version = '4.1.7', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('cowplot', version = '1.1.2', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('modelr', version = '0.1.11', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('ggplot2', version = '3.4.3', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('dplyr', version = '1.1.3', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('patchwork', version = '1.2.0', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('knitr', version = '1.43', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('rmarkdown', version = '2.23', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('markdown', version = '1.7', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('pROC', version = '1.18.5', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('testthat', version = '3.2.1', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('here', version = '1.0.1', repos = 'https://cloud.r-project.org')"
+    install.packages(c(\
+      'docopt', \
+      'GGally', \
+      'broom', \
+      'repr', \
+      'infer', \
+      'gridExtra', \
+      'faraway', \
+      'mitools', \
+      'glmnet', \
+      'cowplot', \
+      'modelr', \
+      'ggplot2', \
+      'dplyr', \
+      'patchwork', \
+      'knitr', \
+      'rmarkdown', \
+      'markdown', \
+      'pROC', \
+      'testthat', \
+      'here'\
+    ), repos = 'https://cloud.r-project.org')"
+
+# Install incomepredictability package from GitHub
+RUN Rscript -e "remotes::install_github('DSCI-310-2025/incomepredictability', ref = 'main')"
+
+# Create a global .Renviron file to disable renv autoloader for all users
+RUN echo 'RENV_CONFIG_AUTOLOADER_ENABLED=FALSE' >> /usr/local/lib/R/etc/Renviron
 
 # Verify installations
 RUN Rscript -e "installed.packages()[,'Package']"
