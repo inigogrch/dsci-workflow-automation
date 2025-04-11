@@ -15,11 +15,11 @@ Reporting Issues & Feature Requests
 
 Contributing Code
 
-1.Fork & Clone the repository:
-2. Create a Branch for your changes:
+1. Fork & Clone the repository.
+2. Create a Branch for your changes. Make sure no direct commit in main branch.
 3. Make Your Changes following project coding guidelines.
 4. Run Tests (if applicable) to ensure everything works.
-5. Commit & Push:
+5. Commit & Push.
 6. Submit a Pull Request (PR) with a clear explanation.
 
 
