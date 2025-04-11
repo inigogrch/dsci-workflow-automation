@@ -50,5 +50,6 @@ rsconnect/
 .ipynb_checkpoints
 .virtual_documents
 
-# .DS_Store (macOS file) - unnecessary
+# macOS system files
 .DS_Store
+**/.DS_Store
