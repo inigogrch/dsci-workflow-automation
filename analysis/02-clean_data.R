@@ -63,133 +63,102 @@ raw_agent <- raw_agent %>%
   # Check for workclass values (X2)
   col_vals_in_set(
     columns = vars(X2),
-    set = c(
-      "State-gov", "Self-emp-not-inc", "Private", "Federal-gov",
-      "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked" # after investigation ? was deemed a plausible value for the data
-    ),
-    label = "Workclass values check"
-  ) %>%
+    set = c("State-gov", "Self-emp-not-inc", "Private", "Federal-gov",
+      "Local-gov", "?", "Self-emp-inc", "Without-pay", "Never-worked"), # after investigation ? was deemed a plausible value for the data
+    label = "Workclass values check") %>%
   # Check for education values (X4)
   col_vals_in_set(
     columns = vars(X4),
-    set = c(
-      "Bachelors", "HS-grad", "11th", "Masters", "9th", "Some-college",
+    set = c("Bachelors", "HS-grad", "11th", "Masters", "9th", "Some-college",
       "Assoc-acdm", "Assoc-voc", "7th-8th", "Doctorate", "Prof-school",
-      "5th-6th", "10th", "1st-4th", "Preschool", "12th"
-    ),
-    label = "Education values check"
-  ) %>%
+      "5th-6th", "10th", "1st-4th", "Preschool", "12th"),
+    label = "Education values check") %>%
   # Check for marital-status values (X6)
   col_vals_in_set(
     columns = vars(X6),
-    set = c(
-      "Never-married", "Married-civ-spouse", "Divorced", "Married-spouse-absent",
-      "Separated", "Married-AF-spouse", "Widowed"
-    ),
-    label = "Marital status values check"
-  ) %>%
+    set = c("Never-married", "Married-civ-spouse", "Divorced", "Married-spouse-absent",
+      "Separated", "Married-AF-spouse", "Widowed"),
+    label = "Marital status values check") %>%
   col_vals_in_set(
     columns = vars(X7),
-    set = c(
-      "Adm-clerical", "Exec-managerial", "Handlers-cleaners",
+    set = c("Adm-clerical", "Exec-managerial", "Handlers-cleaners",
       "Prof-specialty", "Other-service", "Sales",
       "Craft-repair", "Transport-moving", "Farming-fishing",
       "Machine-op-inspct", "Tech-support", "?", # after investigation ? was deemed a plausible value for the data
-      "Protective-serv", "Armed-Forces", "Priv-house-serv"
-    ),
-    label = "Occupation values check"
-  ) %>%
+      "Protective-serv", "Armed-Forces", "Priv-house-serv"),
+    label = "Occupation values check") %>%
   # Check for relationship values (X8)
   col_vals_in_set(
     columns = vars(X8),
-    set = c(
-      "Not-in-family", "Husband", "Wife", "Own-child",
-      "Unmarried", "Other-relative"
-    ),
-    label = "Relationship values check"
-  ) %>%
+    set = c("Not-in-family", "Husband", "Wife", "Own-child",
+      "Unmarried", "Other-relative"),
+    label = "Relationship values check") %>%
   # Check for race values (X9)
   col_vals_in_set(
     columns = vars(X9),
-    set = c(
-      "White", "Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"
-    ),
-    label = "Race values check"
-  ) %>%
+    set = c("White", "Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"),
+    label = "Race values check") %>%
   # Check for sex values (X10)
   col_vals_in_set(
     columns = vars(X10),
     set = c("Male", "Female"),
-    label = "Sex values check"
-  ) %>%
+    label = "Sex values check") %>%
   # Check for native-country values (X14)
   col_vals_in_set(
     columns = vars(X14),
-    set = c(
-      "United-States", "Cuba", "Jamaica", "India", "?", "Mexico", "South", # after investigation ? was deemed a plausible value for the data
+    set = c("United-States", "Cuba", "Jamaica", "India", "?", "Mexico", "South", 
       "Puerto-Rico", "Honduras", "England", "Canada", "Germany", "Iran",
       "Philippines", "Italy", "Poland", "Columbia", "Cambodia", "Thailand",
       "Ecuador", "Laos", "Taiwan", "Haiti", "Portugal", "Dominican-Republic",
       "El-Salvador", "France", "Guatemala", "China", "Japan", "Yugoslavia",
       "Peru", "Outlying-US(Guam-USVI-etc)", "Scotland", "Trinadad&Tobago",
       "Greece", "Nicaragua", "Vietnam", "Hong", "Ireland", "Hungary",
-      "Holand-Netherlands"
-    ),
-    label = "Native-country values check"
-  ) %>%
+      "Holand-Netherlands"),
+    label = "Native-country values check") %>%
   # Check for income values (X15)
   col_vals_in_set(
     columns = vars(X15),
     set = c("<=50K", ">50K"),
-    label = "Income values check"
-  )
+    label = "Income values check")
 # Checklist #8b: Correct category levels (i.e., no single values)
 unique_counts <- raw_data %>%
   summarise(
     workclass_n = n_distinct(X2),
     education_n = n_distinct(X4),
-    marital_status_n = n_distinct(X6)
-  )
+    marital_status_n = n_distinct(X6))
 if (any(unique_counts < 2)) {
   stop("One or more categorical columns contains only a single unique value.")
 }
 # Run the raw data validation
 raw_agent <- interrogate(raw_agent)
 
+# Cleaning
 clean_data <- na.omit(raw_data)
 colnames(clean_data) <- c(
   "age", "workclass", "fnlwgt", "education", "education_num",
   "marital_status", "occupation", "relationship", "race", "sex", "capital_gain", # nolint
-  "capital_loss", "hours_per_week", "native_country", "income"
-)
+  "capital_loss", "hours_per_week", "native_country", "income")
 clean_data$income <- as.factor(clean_data$income)
 
 # Clean Data Validation
 clean_agent <- create_agent(
   tbl = clean_data,
   tbl_name = "Cleaned Data",
-  actions = action_levels(warn_at = 1, stop_at = 1, notify_at = 1)
-) %>%
+  actions = action_levels(warn_at = 1, stop_at = 1, notify_at = 1)) %>%
   # Validate column renaming
   col_exists(
-    columns = c(
-      "age", "workclass", "fnlwgt", "education", "education_num",
+    columns = c("age", "workclass", "fnlwgt", "education", "education_num",
       "marital_status", "occupation", "relationship", "race", "sex",
       "capital_gain", "capital_loss", "hours_per_week", "native_country",
-      "income"
-    )
-  ) %>%
+      "income")) %>%
   # Validate row completeness, should work because of na.omit()
   rows_complete() %>%
-  # Validate 100% completeness for data (Checklist #4 confirmed)
+  # Validate 100% completeness of data (Checklist #4 confirmed)
   col_vals_not_null(
-    columns = c(
-      "age", "workclass", "fnlwgt", "education", "education_num",
+    columns = c("age", "workclass", "fnlwgt", "education", "education_num",
       "marital_status", "occupation", "relationship", "race", "sex",
       "capital_gain", "capital_loss", "hours_per_week", "native_country",
-      "income"
-    )
-  ) %>%
+      "income")) %>%
   # Validate correct column types + successful factor data type for target
   col_is_numeric(columns = vars(age, fnlwgt, education_num, capital_gain, capital_loss, hours_per_week)) %>%
   col_is_character(columns = vars(workclass, education, marital_status, occupation, relationship, race, sex, native_country)) %>%
