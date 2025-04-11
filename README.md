@@ -55,7 +55,7 @@ To reproduce the analysis, follow these steps:
 3.  **Run the Analysis**:
 
 -   Open the RStudio environment
--   Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
+-   Navigate to the src directory and run the analysis scripts (e.g., analysis.R) as described in the "Running the Makefile" section below
 
 # Dependencies
 
@@ -85,6 +85,8 @@ The following dependencies are required to run the analysis:
 # Docker Container Setup
 
 This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis.
+
+Before using the Docker, please ensure the Docker Desktop application runs in the background.
 
 ## Using Docker with Docker Compose (Recommended)
 

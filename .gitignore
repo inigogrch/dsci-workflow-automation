@@ -49,3 +49,7 @@ po/*~
 rsconnect/
 .ipynb_checkpoints
 .virtual_documents
+
+# macOS system files
+.DS_Store
+**/.DS_Store
