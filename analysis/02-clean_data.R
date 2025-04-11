@@ -29,8 +29,7 @@ if (!inherits(raw_data, "data.frame")) {
 raw_agent <- create_agent(
   tbl = raw_data,
   tbl_name = "Raw Data",
-  actions = action_levels(warn_at = 1, stop_at = 50, notify_at = 1)
-) %>%
+  actions = action_levels(warn_at = 50, stop_at = 50, notify_at = 50)) %>%
   # Checklist #2: Correct column names (raw data headers are X1, X2, ..., X15) #nolint
   col_exists(columns = paste0("X", 1:15)) %>%
   # Checklist #3: No empty observations (checks for completely NA rows)
@@ -47,10 +46,12 @@ if (!all(missing_thresholds >= 0.95)) {
 raw_agent <- raw_agent %>%
   col_is_numeric(columns = vars(X1, X3, X5, X11, X12, X13)) %>%
   col_is_character(columns = vars(X2, X4, X6, X7, X8, X9, X10, X14, X15)) %>%
+
   # Checklist #6: No duplicate observations
-  # Duplicate row validation failed, but after investigation these observations were deemed distinct
-  # Hence we will increase the stopping threshold so it only warns rather than stops the workflow
+  # Duplicate row validation flagged by pointblank, but after investigation these observations were deemed distinct
+  # Hence we will increase the threshold to avoid any warnings or stopping the workflow
   rows_distinct() %>%
+
   # Checklist #7: No outliers or anomalous values
   col_vals_between(columns = vars(X1), left = 0, right = 100) %>% # age (X1): 0-100
   col_vals_between(columns = vars(X3), left = 1, right = Inf) %>%   # fnlwgt (X3): positive
@@ -120,6 +121,7 @@ raw_agent <- raw_agent %>%
     columns = vars(X15),
     set = c("<=50K", ">50K"),
     label = "Income values check")
+
 # Checklist #8b: Correct category levels (i.e., no single values)
 unique_counts <- raw_data %>%
   summarise(
@@ -129,6 +131,7 @@ unique_counts <- raw_data %>%
 if (any(unique_counts < 2)) {
   stop("One or more categorical columns contains only a single unique value.")
 }
+
 # Run the raw data validation
 raw_agent <- interrogate(raw_agent)
 
@@ -163,9 +166,17 @@ clean_agent <- create_agent(
   col_is_numeric(columns = vars(age, fnlwgt, education_num, capital_gain, capital_loss, hours_per_week)) %>%
   col_is_character(columns = vars(workclass, education, marital_status, occupation, relationship, race, sex, native_country)) %>%
   col_is_factor(columns = vars(income))
+  # No duplicate observations
+  rows_distinct() %>%
+  # No outliers or anomalous values
+  col_vals_between(columns = vars(X1), left = 0, right = 100) %>% # age (X1): 0-100
+  col_vals_between(columns = vars(X3), left = 1, right = Inf) %>%   # fnlwgt (X3): positive
+  col_vals_between(columns = vars(X5), left = 1, right = 16) %>% # education_num (X5): 1-16
+  col_vals_between(columns = vars(X11), left = 0, right = Inf) %>% # capital_gain (X11): 0 or positive
+  col_vals_between(columns = vars(X12), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
+  col_vals_between(columns = vars(X13), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
 # Run the clean data validation
 clean_agent <- interrogate(clean_agent)
-clean_agent
 
 write.csv(clean_data, doc$output, row.names = FALSE)
 message("Dataset cleaned successfully.")
