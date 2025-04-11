@@ -42,7 +42,7 @@ To reproduce the analysis, follow these steps:
 3.  **Run the Analysis**:
 
 -   Open the RStudio environment
--   Navigate to the src directory and run the analysis scripts (e.g., analysis.R)
+-   Navigate to the src directory and run the analysis scripts (e.g., analysis.R) as described in the "Running the Makefile" section below
 
 # Dependencies
 
