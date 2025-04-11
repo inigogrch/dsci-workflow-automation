@@ -169,7 +169,7 @@ clean_agent <- create_agent(
   # Validate correct column types + successful factor data type for target
   col_is_numeric(columns = vars(age, fnlwgt, education_num, capital_gain, capital_loss, hours_per_week)) %>%
   col_is_character(columns = vars(workclass, education, marital_status, occupation, relationship, race, sex, native_country)) %>%
-  col_is_factor(columns = vars(income))
+  col_is_factor(columns = vars(income))%>%
   # No duplicate observations
   rows_distinct() %>%
   # No outliers or anomalous values
@@ -178,7 +178,7 @@ clean_agent <- create_agent(
   col_vals_between(columns = vars(education_num), left = 1, right = 16) %>% # education_num (X5): 1-16
   col_vals_between(columns = vars(capital_gain), left = 0, right = Inf) %>% # capital_gain (X11): 0 or positive
   col_vals_between(columns = vars(capital_loss), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
-  col_vals_between(columns = vars(hours_per_week), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
+  col_vals_between(columns = vars(hours_per_week), left = 1, right = 100) # hours_per_week (X13) 1-100
   
 # We choose to omit category level and value check because we standardize all categorical values in the previous validation and in cleaning
 # Rechecking them on the cleaned data and subsequent splits would be redundant
