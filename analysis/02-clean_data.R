@@ -25,13 +25,16 @@ raw_data <- read_csv(doc$input, col_names = FALSE)
 if (!inherits(raw_data, "data.frame")) {
   stop("The input raw_data is not a data frame or tibble as expected!")
 }
-# Pointblank agent for the raw data with action levels that automatically warn and stop (on a threshold) upon failure. #nolint
+
 raw_agent <- create_agent(
   tbl = raw_data,
   tbl_name = "Raw Data",
+  # Set at 50 to accommodate incorrectly flagged duplicates
   actions = action_levels(warn_at = 50, stop_at = 50, notify_at = 50)) %>%
+
   # Checklist #2: Correct column names (raw data headers are X1, X2, ..., X15) #nolint
   col_exists(columns = paste0("X", 1:15)) %>%
+
   # Checklist #3: No empty observations (checks for completely NA rows)
   rows_complete()
 
@@ -42,6 +45,7 @@ missing_thresholds <- raw_data %>%
 if (!all(missing_thresholds >= 0.95)) {
   stop("One or more columns do not meet the 95% non-missing threshold.")
 }
+
 # Checklist #5: Correct column data types (expected types based on spec)
 raw_agent <- raw_agent %>%
   col_is_numeric(columns = vars(X1, X3, X5, X11, X12, X13)) %>%
@@ -169,12 +173,15 @@ clean_agent <- create_agent(
   # No duplicate observations
   rows_distinct() %>%
   # No outliers or anomalous values
-  col_vals_between(columns = vars(X1), left = 0, right = 100) %>% # age (X1): 0-100
-  col_vals_between(columns = vars(X3), left = 1, right = Inf) %>%   # fnlwgt (X3): positive
-  col_vals_between(columns = vars(X5), left = 1, right = 16) %>% # education_num (X5): 1-16
-  col_vals_between(columns = vars(X11), left = 0, right = Inf) %>% # capital_gain (X11): 0 or positive
-  col_vals_between(columns = vars(X12), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
-  col_vals_between(columns = vars(X13), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
+  col_vals_between(columns = vars(age), left = 0, right = 100) %>% # age (X1): 0-100
+  col_vals_between(columns = vars(fnlwgt), left = 1, right = Inf) %>%   # fnlwgt (X3): positive
+  col_vals_between(columns = vars(education_num), left = 1, right = 16) %>% # education_num (X5): 1-16
+  col_vals_between(columns = vars(capital_gain), left = 0, right = Inf) %>% # capital_gain (X11): 0 or positive
+  col_vals_between(columns = vars(capital_loss), left = 0, right = Inf) %>% # capital_loss (X12): 0 or positive
+  col_vals_between(columns = vars(hours_per_week), left = 1, right = 100) %>% # hours_per_week (X13) 1-100
+  
+# We choose to omit category level and value check because we standardize all categorical values in the previous validation and in cleaning
+# Rechecking them on the cleaned data and subsequent splits would be redundant
 # Run the clean data validation
 clean_agent <- interrogate(clean_agent)
 
