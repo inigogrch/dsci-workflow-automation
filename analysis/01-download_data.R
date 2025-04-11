@@ -12,7 +12,8 @@ Options:
 
 library(docopt)
 
-source("R/download_data.R")
+# source("R/download_data.R")
+library(incomepredictability)
 
 doc <- docopt("
 Usage:

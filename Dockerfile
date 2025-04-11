@@ -44,7 +44,9 @@ RUN Rscript -e "\
     remotes::install_version('knitr', version = '1.43', repos = 'https://cloud.r-project.org'); \
     remotes::install_version('rmarkdown', version = '2.23', repos = 'https://cloud.r-project.org'); \
     remotes::install_version('markdown', version = '1.7', repos = 'https://cloud.r-project.org'); \
-    remotes::install_version('pROC', version = '1.18.5', repos = 'https://cloud.r-project.org')"
+    remotes::install_version('pROC', version = '1.18.5', repos = 'https://cloud.r-project.org'); \
+    remotes::install_version('testthat', version = '3.2.1', repos = 'https://cloud.r-project.org'); \
+    remotes::install_version('here', version = '1.0.1', repos = 'https://cloud.r-project.org')"
 
 # Verify installations
 RUN Rscript -e "installed.packages()[,'Package']"
