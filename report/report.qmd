@@ -274,13 +274,11 @@ From @tbl-classification-results, we observe the following metrics:
 ## Discussion
 ### Summary of Findings and Implications
 
-- The logistic regression model showed strong predictive power **(AUC =`` `r auc_value` ``)**, demonstrating that the model can effectively distinguish income levels better than a baseline.
-- These findings can inform policies aimed at reducing income inequality. Education and hours worked were key predictors, emphasizing the need for skill development and work-life balance.
-- Understanding the factors behind income disparities can help individuals make more informed career decisions and pursue opportunities for skill enhancement.
+The logistic regression model showed strong predictive power **(AUC =`` `r auc_value` ``)**, demonstrating that the model can effectively distinguish income levels better than a baseline. These findings can inform policies aimed at reducing income inequality. Education and hours worked were key predictors, emphasizing the need for skill development and work-life balance. Understanding the factors behind income disparities can help individuals make more informed career decisions and pursue opportunities for skill enhancement.
 
 ### Expectations and Results
 
-- The model’s **AUC (`` `r auc_value` ``)** is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
+The model’s **AUC (`` `r auc_value` ``)** is strong, reflecting the importance of predictors like age, education, and hours worked. Overall, the results are consistent with expectations from the research study:
   - **Age** correlates with experience, leading to higher salaries.
   - **Education** increases income, with those holding a degree earning significantly more.
   - **Hours Worked** reflects labor input, where more hours can translate to higher pay.
