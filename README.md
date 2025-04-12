@@ -195,16 +195,6 @@ The `make all` command does the following:
 
 7\. Renders the final report in docs/index.html
 
-# Testing the Functions
-
-We abstracted reusable logic from our scripts into the `R/` folder and wrote test cases using the `{testthat}` framework in `tests/testthat/`.
-
-To run all tests:
-
-```bash
-make test
-```
-
 # Licenses
 
 This project is dual-licensed:
