@@ -175,7 +175,7 @@ If you want to build the Docker image locally:
 
 # Running the Makefile (Our Analysis)
 
-1.  In docker's terminal application, type `cd project`, then type `make all`.
+1.  In Rstudio's terminal, type `cd project`, then type `make all`.
 2.  Then go to **/project/report/report.qmd** and click the **Render** button to render it. 
 3.  If you encounter issues, reset the data and start over by running: `make clean`.
 
