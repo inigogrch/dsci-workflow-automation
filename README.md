@@ -54,8 +54,14 @@ To reproduce the analysis, follow these steps:
 
 3.  **Run the Analysis**:
 
--   Open the RStudio environment
--   Navigate to the src directory and run the analysis scripts (e.g., analysis.R) as described in the "Running the Makefile" section below
+-   In RStudio's terminal, navigate to the project directory: `cd project`
+-   Run the complete analysis pipeline: `make all`
+-   The final report will be generated as `docs/index.html`
+
+## View the Published Report
+
+The analysis report is published via GitHub Pages at:
+**https://inigogrch.github.io/dsci-workflow-automation/**
 
 # Dependencies
 
@@ -89,111 +95,116 @@ For more details about the custom package, see the incomepredictability reposito
 
 This project uses Docker to ensure a consistent and reproducible computational environment. The Docker image contains all necessary R packages and dependencies to run the analysis, including our custom `incomepredictability` package.
 
-Before using the Docker, please ensure the Docker Desktop application runs in the background.
+**Prerequisites**: Ensure Docker Desktop is installed and running on your system.
+- [Docker Installation Guide](https://docs.docker.com/get-docker/)
 
-## Using Docker with Docker Compose (Recommended)
+## Option 1: Using Pre-built Image with Docker Compose (Quickest)
 
-The easiest way to use our Docker container is with Docker Compose:
+The easiest way to get started is using the pre-built image with Docker Compose:
 
-1.  **Install Docker and Docker Compose** on your system if you haven't already:
-
-    -   [Docker Installation Guide](https://docs.docker.com/get-docker/)
-    -   [Docker Compose Installation Guide](https://docs.docker.com/compose/install/)
-
-2. **Keeping Your Docker Environment Updated**
-
-To ensure you're using the latest Docker image with all required packages:
-
-**Before Starting Work**
-
-Whenever you switch branches or before starting work on the project, run the following commands to get the latest Docker image:
-
-```bash
-docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
-```
-
-**Stop any existing containers**
-```bash
-docker-compose down
-```
-
-**Start a fresh container with the latest image**
-```bash
-docker-compose up
-```
-
-3.  **Access RStudio** by opening a web browser and going to:
-
-    -   http://localhost:8787
-
-Use the following credentials: - Username: rstudio - Password: group8
-
-## Using Docker directly
-
-If you prefer to use Docker without Docker Compose:
-
-1.  **Pull the image from Docker Hub**:
-
-    ``` bash
+1.  **Pull the latest image**:
+    ```bash
     docker pull zx2yizzy/dsci-310-group-8-project-docker:latest
     ```
 
+2.  **Start the container**:
+    ```bash
+    docker-compose up
+    ```
+    
+    Or run in detached mode:
+    ```bash
+    docker-compose up -d
+    ```
+
+3.  **Access RStudio** at http://localhost:8787
+    - Username: `rstudio`
+    - Password: `group8`
+
+4.  **Stop the container** when done:
+    ```bash
+    docker-compose down
+    ```
+
+## Option 2: Building Your Own Image Locally
+
+If you want to build the Docker image yourself (useful for making custom modifications):
+
+1.  **Build the image**:
+    ```bash
+    docker build -t my-dsci-310-analysis .
+    ```
+    *Note: This may take 10-15 minutes as it installs all R packages.*
+
 2.  **Run the container**:
-
-    ``` bash
-    docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project zx2yizzy/dsci-310-group-8-project-docker:latest
+    ```bash
+    docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project my-dsci-310-analysis
     ```
 
-3.  **Access RStudio** by opening a web browser and going to:
+3.  **Access RStudio** at http://localhost:8787
+    - Username: `rstudio`
+    - Password: `group8`
 
-    ``` bash
-    http://localhost:8787
+4.  **Stop the container**:
+    ```bash
+    docker ps  # Find the container ID
+    docker stop <container-id>
     ```
 
-## Building the image locally
+### Optional: Push Your Own Image to Docker Hub
 
-If you want to build the Docker image locally:
+If you want to share your custom image:
 
-1.  **Clone the repository**:
+1.  **Create a Docker Hub account** at https://hub.docker.com
 
-    ``` bash
-    git clone https://github.com/DSCI-310-2025/dsci-310-group-8.git
-    cd dsci-310-group-8
+2.  **Tag your image**:
+    ```bash
+    docker tag my-dsci-310-analysis YOUR-DOCKERHUB-USERNAME/dsci-310-analysis:latest
     ```
 
-2.  **Build the image**:
-
-    ``` bash
-    docker build -t dsci-310-group-8-project-docker .
+3.  **Login and push**:
+    ```bash
+    docker login
+    docker push YOUR-DOCKERHUB-USERNAME/dsci-310-analysis:latest
     ```
 
-3.  **Run the container**:
-
-    ``` bash
-    docker run -d -p 8787:8787 -e PASSWORD=group8 -v $(pwd):/home/rstudio/project dsci-310-group-8-project-docker
+4.  **Update docker-compose.yml** to use your image:
+    ```yaml
+    image: YOUR-DOCKERHUB-USERNAME/dsci-310-analysis:latest
     ```
 
-# Running the Makefile (Our Analysis)
+# Running the Analysis Pipeline
 
-1.  In Rstudio's terminal, type `cd project`, then type `make all`.
-2.  Then go to **/project/report/report.qmd** and click the **Render** button to render it. 
-3.  If you encounter issues, reset the data and start over by running: `make clean`.
+Once you have Docker running and have accessed RStudio:
 
-The `make all` command does the following:
+1.  **Navigate to the project directory** in RStudio's terminal:
+    ```bash
+    cd project
+    ```
 
-1\. Downloads the dataset
+2.  **Run the complete analysis**:
+    ```bash
+    make all
+    ```
+    
+    This automated pipeline will:
+    - Download the UCI Adult dataset
+    - Clean and preprocess the data
+    - Split into training/testing sets
+    - Perform exploratory data analysis (EDA)
+    - Train a logistic regression model
+    - Evaluate the model and generate results
+    - Render the final HTML report to `docs/index.html`
 
-2\. Cleans and preprocesses the data
+3.  **View the report**:
+    - The report will be available at `docs/index.html`
+    - Or view it online at: https://inigogrch.github.io/dsci-workflow-automation/
 
-3\. Splits the dataset into training and testing sets
-
-4\. Performs exploratory data analysis (EDA)
-
-5\. Trains a logistic regression model
-
-6\. Evaluates the model and generates final results
-
-7\. Renders the final report in docs/index.html
+4.  **Clean up and start fresh** (if needed):
+    ```bash
+    make clean
+    ```
+    This removes all generated outputs and allows you to re-run the analysis from scratch.
 
 # Licenses
 
